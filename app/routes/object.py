@@ -1,6 +1,6 @@
 from uuid import uuid4
 from fastapi import HTTPException, APIRouter, UploadFile, File, Depends, Form
-from app.schemas.object import ObjectResponseSchema, ObjectSchema
+from app.schemas.object import ObjectResponseSchema, ObjectListResponseSchema
 from app.models.object import Object
 from app.models.user import User
 from app.services.auth import get_current_user
@@ -43,7 +43,7 @@ async def create_object(
         print(e)
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.post('/{_id}/samples', response_model=ObjectResponseSchema)
+@router.patch('/{_id}/samples', response_model=ObjectResponseSchema)
 async def add_samples(
     _id: str, 
     files: List[UploadFile] = File(...),
@@ -57,3 +57,39 @@ async def add_samples(
         'status': 'success',
         'data': object
     }
+
+@router.get('/me/', response_model=ObjectListResponseSchema)
+async def get_all_objects(current_user: User = Depends(get_current_user)):
+    try:
+        objects = Object.objects(user=current_user)
+        object_dicts = [obj.to_mongo().to_dict() for obj in objects]
+        for obj in object_dicts:
+            obj['_id'] = str(obj['_id'])
+        return {
+            'status': 'success',
+            'data': list(object_dicts)
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@router.delete('/me/{object_id}', response_model=ObjectListResponseSchema)
+async def delete_object(
+    object_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    try:
+        object = Object.objects(id=object_id, user=current_user).first()
+        if not object:
+            raise HTTPException(status_code=404, detail="Object not found")
+        object.delete()
+        objects = Object.objects(user=current_user)
+        object_dicts = [obj.to_mongo().to_dict() for obj in objects]
+        for obj in object_dicts:
+            obj['_id'] = str(obj['_id'])
+        return {
+            'status': 'success',
+            'data': list(object_dicts)
+        }
+    except Exception as e:
+        print(f"Error deleting object: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")

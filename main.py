@@ -1,5 +1,6 @@
 import uvicorn, os
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from app.core.config import settings
 from app.routes import auth, image, object
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
 os.makedirs(settings.PUBLIC_DIR, exist_ok=True)
+app.mount('/public', StaticFiles(directory=settings.PUBLIC_DIR), name='public')
 
 app.add_middleware(
     CORSMiddleware,
