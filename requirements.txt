@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+passlib[bcrypt]
+python-jose
+pillow
+tensorflow
+tensorflow-hub
+opencv-python
+numpy
+mongoengine
