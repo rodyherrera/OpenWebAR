@@ -9,44 +9,6 @@
     object-fit: cover;
 }
 
-.Camera-Trigger-Container[data-isdisabled='true']{
-    opacity: .7;
-}
-
-.Camera-Footer-Container{
-    display: flex;
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
-    align-items: center;
-    padding: 1rem;
-    justify-content: space-between;
-}
-
-.Camera-Footer-Container > div{
-    width: 33.3%;
-}
-
-.Camera-Footer-Center-Container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.Camera-Footer-Right-Container{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.Camera-Trigger-Container{
-    border: 2px solid #f5f5f5;
-    border-radius: 50%;
-    padding: .2rem;
-    width: 4rem;
-    height: 4rem;
-}
-
 .Camera-Gallery-Icon-Container{
     display: flex;
     align-items: center;
@@ -54,20 +16,6 @@
 
 .Camera-Gallery-Icon{
     font-size: 1.2rem;
-}
-
-.Camera-Trigger-Button{
-    border-radius: 50%;
-    background-color: #FFFFFF;
-    width: 100%;
-    cursor: pointer;
-    transition: .3s;
-    height: 100%;
-}
-
-.Camera-Trigger-Button:active{
-    border-radius: 40%;
-    transform: scale(.85);
 }
 
 .Camera-Particle-Entity{
