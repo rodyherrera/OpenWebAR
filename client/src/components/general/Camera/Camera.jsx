@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import Prompt from '@components/general/Prompt';
 import useCamera from '@hooks/useCamera';
+import useFrameSender from '@hooks/useFrameSender';
 import axios from 'axios';
 import './Camera.css';
 
@@ -14,7 +15,7 @@ const deviceMotion = {
 const Camera = () => {
     const cameraContainerRef = useRef(null);
     const { videoRef, cameraPermissionDenied } = useCamera();
-    const [isSending, setIsSending] = useState(false);
+    const { isSending, takePhotoAndSend } = useFrameSender(videoRef);
     
     const animateParticle = (particleNode) => {
         const duration = 3000 + Math.random() * 3000;
@@ -48,27 +49,6 @@ const Camera = () => {
         particleNode.style.top = `${y}%`;
         cameraContainerRef.current.appendChild(particleNode);
         animateParticle(particleNode);
-    }
-
-    const takePhotoAndSend = () => {
-        if(isSending || !videoRef.current) return;
-        setIsSending(true);
-        const canvas = document.createElement('canvas');
-        canvas.width = videoRef.current.videoWidth;
-        canvas.height = videoRef.current.videoHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(async (blob) => {
-            const formData = new FormData();
-            formData.append('image', blob, 'frame.jpg');
-            try{
-                axios.post('https://bar.rodyherrera.com/compare/', formData);
-            }catch(err){
-                console.log('Error sending photo:', err);
-            }finally{
-                setIsSending(false);
-            }
-        });
     }
 
     const handleMotion = (e) => {
