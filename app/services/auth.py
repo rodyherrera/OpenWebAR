@@ -7,6 +7,7 @@ from app.schemas.auth import TokenData
 from app.models.user import User
 from app.core.config import settings
 from typing import Optional
+from app.db.connection import get_db
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='token')
@@ -28,14 +29,16 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     return encoded_jwt
 
 async def get_user(username: str):
-    user = User.objects(username=username).first()
+    db = await get_db()
+    user = await db.user.find_one({ 'username': username })
     if user:
         return user
     return None
 
 async def authenticate_user(username: str, password: str):
     user = await get_user(username)
-    if user and verify_password(password, user.hashed_password):
+    print(user)
+    if user and verify_password(password, user['hashed_password']):
         return user
     return None
 

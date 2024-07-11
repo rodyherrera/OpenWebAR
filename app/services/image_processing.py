@@ -23,7 +23,7 @@ def preprocess_and_extract(image_path):
     return preprocess_image(image_path), extract_local_features(image_path)
 
 def compare_images(query_image_path, database_paths, model):
-    query_image, query_descriptors = preprocess_and_extract(query_image_path)
+    _, query_descriptors = preprocess_and_extract(query_image_path)
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = list(executor.map(preprocess_and_extract, database_paths))
     best_match_index = -1

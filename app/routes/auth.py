@@ -3,19 +3,25 @@ from app.schemas.auth import AuthResponseModel, LoginModel
 from app.schemas.user import UserCreateModel, UserModel
 from app.services.auth import authenticate_user, create_access_token, get_password_hash, get_current_user
 from app.models.user import User
+from app.db.connection import get_db_dependency
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
 router = APIRouter()
 
 @router.post('/sign-up/', response_model=AuthResponseModel)
-async def signup(user: UserCreateModel):
-    user_obj = User(
-        username=user.username,
-        email=user.email,
-        hashed_password=get_password_hash(user.password)
-    )
-    user_obj.save()
-    access_token = create_access_token(data={'sub': user.username})
-    user_model = UserModel(username=user_obj.username, email=user_obj.email)
+async def signup(user: UserCreateModel, db: AsyncIOMotorDatabase = Depends(get_db_dependency)):
+    existing_user = await db.user.find_one({ 'username': user.username })
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='Username already registered'
+        )
+    user_dict = user.dict()
+    user_dict['hashed_password'] = get_password_hash(user.password)
+    del user_dict['password']
+    await db.user.insert_one(user_dict)
+    access_token = create_access_token(data={ 'sub': user.username })
+    user_model = UserModel(username=user.username, email=user.email)
     return {
         'status': 'success',
         'data': {
@@ -33,8 +39,8 @@ async def signin(login: LoginModel):
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={'sub': user.username})
-    user_model = UserModel(username=user.username, email=user.email)
+    access_token = create_access_token(data={'sub': user['username']})
+    user_model = UserModel(username=user['username'], email=user['email'])
     return {
         'status': 'success',
         'data': {
@@ -45,4 +51,4 @@ async def signin(login: LoginModel):
 
 @router.get('/me/', response_model=UserModel)
 async def read_users_me(current_user: User = Depends(get_current_user)):
-    return current_user
+    return UserModel(**current_user)
