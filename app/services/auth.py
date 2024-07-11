@@ -3,8 +3,8 @@ from jose import JWTError, jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from passlib.context import CryptContext
-from app.schemas.auth import TokenData
-from app.models.user import User
+from app.schemas.auth import TokenData, AuthResponseModel
+from app.schemas.user import UserModel
 from app.core.config import settings
 from typing import Optional
 from app.db.connection import get_db
@@ -60,3 +60,14 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     if user is None:
         raise credentials_exception
     return user
+
+async def create_user_response(username: str, email: str) -> AuthResponseModel:
+    access_token = create_access_token(data={ 'sub': username })
+    user_model = UserModel(username=username, email=email)
+    return AuthResponseModel(
+        status='success',
+        data={
+            'token': access_token,
+            'user': user_model
+        }
+    )
