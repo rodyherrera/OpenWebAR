@@ -1,1 +1,3 @@
-public/
+server/public/
+client/node_modules/
+client/package-lock.json
