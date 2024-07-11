@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import Prompt from '@components/general/Prompt';
+import useCamera from '@hooks/useCamera';
 import axios from 'axios';
 import './Camera.css';
 
@@ -11,11 +12,9 @@ const deviceMotion = {
 };
 
 const Camera = () => {
-    const videoRef = useRef(null);
     const cameraContainerRef = useRef(null);
-    const [cameraPermissionDenied, setCameraPermissionDenied] = useState(false);
+    const { videoRef, cameraPermissionDenied } = useCamera();
     const [isSending, setIsSending] = useState(false);
-    const [isMoving, setIsMoving] = useState(false);
     
     const animateParticle = (particleNode) => {
         const duration = 3000 + Math.random() * 3000;
@@ -49,22 +48,6 @@ const Camera = () => {
         particleNode.style.top = `${y}%`;
         cameraContainerRef.current.appendChild(particleNode);
         animateParticle(particleNode);
-    }
-
-    const requestCameraPermission = async () => {
-        try{
-            const constraints = {
-                video: {
-                    facingMode: 'environment',
-                    width: { ideal: 3840 },
-                    height: { ideal: 2160 }
-                }
-            };
-            const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            if(videoRef.current) videoRef.current.srcObject = stream;
-        }catch(err){
-            setCameraPermissionDenied(true);
-        }
     }
 
     const takePhotoAndSend = () => {
@@ -125,7 +108,6 @@ const Camera = () => {
     };
 
     useEffect(() => {
-        requestCameraPermission();
         const requestPermissionsBtn = document.getElementById('requestPermissionsBtn');
         requestPermissionsBtn.addEventListener('click', requestDeviceMotionPermission);
         return () => {
@@ -135,7 +117,7 @@ const Camera = () => {
         };
     }, []);
 
-    return (false) ? (
+    return (cameraPermissionDenied) ? (
         <p>Permission denied. Please allow camera access.</p>
     ) : (
         <div className='Camera-Container' ref={cameraContainerRef}>
@@ -158,12 +140,14 @@ const Camera = () => {
                 <div>
                 </div>
             </div>
+
             <video 
                 className='Camera-Video'
                 ref={videoRef} 
                 autoPlay 
                 playsInline 
                 muted />
+
             <div className='Camera-Footer-Container'>
                 <div className='Camera-Footer-Left-Container'>
                 </div>

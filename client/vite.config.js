@@ -12,6 +12,7 @@ export default defineConfig({
        '@': '/src/',
        '@styles': '/src/assets/stylesheets/',
        '@pages': '/src/pages/',
+       '@hooks': '/src/hooks/',
        '@components': '/src/components/',
        '@utilities': '/src/utilities/',
        '@services': '/src/services/'
