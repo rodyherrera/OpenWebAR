@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { FaArrowLeftLong } from 'react-icons/fa6';
-import { CgClose } from 'react-icons/cg';
+import Prompt from '@components/general/Prompt';
 import axios from 'axios';
 import './Camera.css';
 
@@ -139,20 +139,11 @@ const Camera = () => {
         <p>Permission denied. Please allow camera access.</p>
     ) : (
         <div className='Camera-Container' ref={cameraContainerRef}>
-            <div className='Prompt-Container'>
-                <div className='Prompt-Header-Title-Container'>
-                    <i className='Prompt-Header-Icon-Container'>
-                        <CgClose />
-                    </i>
-                    <h3 className='Prompt-Header-Title'>Your inmersive web experience</h3>
-                    <p className='Prompt-Header-Description'>We need you to interactively provide us with permissions to use your device's sensors. It will only be once, your privacy will not be affected.</p>
-                </div>
-                <div className='Prompt-Footer-Container'>
-                    <div className='Prompt-Option-Container' id='requestPermissionsBtn'>
-                        <p className='Prompt-Option-Text'>Continue</p>
-                    </div>
-                </div>
-            </div>
+            <Prompt
+                title='Your inmersive web experience'
+                description="We need you to interactively provide us with permissions to use your device's sensors. It will only be once, your privacy will not be affected."
+                buttonContainerProps={{ id: 'requestPermissionsBtn' }}
+            />
 
             <div className='Camera-Header-Container'>
                 <div className='Camera-Header-Left-Container'>
