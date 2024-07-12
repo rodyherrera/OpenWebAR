@@ -1,10 +1,19 @@
 from uuid import uuid4
 from app.core.config import settings
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.services.image_processing import remove_background
 from typing import List
 from PIL import Image, ExifTags
 from fastapi import UploadFile
 import os, io
+
+async def fetch_objects_samples_urls(db: AsyncIOMotorDatabase) -> List[str]:
+    cursor = db.object.find({ }, { 'samples': 1, '_id': 0 })
+    samples_urls = []
+    async for obj in cursor:
+        samples_urls.extend(obj.get('samples', []))
+    return samples_urls
+
 
 async def save_files_and_update_object(object: dict, files: List[UploadFile]) -> List[str]:
     for file in files:
