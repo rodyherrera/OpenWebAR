@@ -11,3 +11,6 @@ pydantic
 motor
 mongoengine
 pydantic_settings
+rembg
+joblib
+scikit-learn
