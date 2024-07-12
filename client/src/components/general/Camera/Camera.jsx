@@ -9,13 +9,17 @@ import './Camera.css';
 
 const Camera = () => {
     const cameraContainerRef = useRef(null);
+    const requestPermissionsRef = useRef(null);
     const { videoRef, cameraPermissionDenied } = useCamera();
     const { isSending, takeFrameAndSend } = useFrameSender(videoRef);
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
 
     useEffect(() => {
-        const requestPermissionsBtn = document.getElementById('requestPermissionsBtn');
-        requestPermissionsBtn.addEventListener('click', requestDeviceMotionPermission);
+        if(!requestPermissionsRef.current) return;
+        requestPermissionsRef.current.addEventListener('click', requestDeviceMotionPermission);
+    }, [requestPermissionsRef]);
+
+    useEffect(() => {
         return () => {
             if(videoRef.current && videoRef.current.srcObject){
                 videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
@@ -30,7 +34,7 @@ const Camera = () => {
             <Prompt
                 title='Your inmersive web experience'
                 description="We need you to interactively provide us with permissions to use your device's sensors. It will only be once, your privacy will not be affected."
-                buttonContainerProps={{ id: 'requestPermissionsBtn' }}
+                buttonContainerProps={{ ref: requestDeviceMotionPermission }}
             />
             <CameraHeader />
             <video className='Camera-Video' ref={videoRef} autoPlay playsInline muted />
