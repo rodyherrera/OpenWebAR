@@ -49,6 +49,7 @@ async def create_object(
             'data': new_object
         }
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=400, detail=str(e))
 
 @router.get('/me/', response_model=ObjectListResponseSchema)
