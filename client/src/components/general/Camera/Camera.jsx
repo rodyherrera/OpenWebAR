@@ -10,7 +10,7 @@ import './Camera.css';
 const Camera = () => {
     const cameraContainerRef = useRef(null);
     const { videoRef, cameraPermissionDenied } = useCamera();
-    const { isSending, takePhotoAndSend } = useFrameSender(videoRef);
+    const { isSending, takeFrameAndSend } = useFrameSender(videoRef);
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const Camera = () => {
             />
             <CameraHeader />
             <video className='Camera-Video' ref={videoRef} autoPlay playsInline muted />
-            <CameraFooter />
+            <CameraFooter takeFrameAndSend={takeFrameAndSend} />
         </div>
     );
 };

@@ -37,7 +37,7 @@ const MyObjects = () => {
                                 <img 
                                     key={index}
                                     className='Object-Sample'
-                                    src={import.meta.env.VITE_SERVER + url}
+                                    src={import.meta.env.VITE_SERVER + '/' + url}
                                     alt={`Sample ${index + 1}`}
                                 />
                             ))}

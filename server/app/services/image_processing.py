@@ -1,51 +1,42 @@
-import tensorflow as tf
-import tensorflow_hub as hub
 import numpy as np
-import cv2
 from PIL import Image
-import concurrent.futures
+import tensorflow as tf
+from rembg import remove
+from sklearn.metrics.pairwise import cosine_similarity
+import concurrent.futures, io
 
-def load_model():
-    return hub.load('https://tfhub.dev/google/imagenet/mobilenet_v2_140_224/classification/5')
+inception_v3 = tf.keras.applications.InceptionV3(include_top=False, pooling='avg', input_shape=(299, 299, 3))
 
 def preprocess_image(image_path):
-    image = Image.open(image_path).resize((224, 224))
+    image = Image.open(image_path).convert('RGB').resize((299, 299))
     image_np = np.array(image)
-    return tf.image.convert_image_dtype(image_np, tf.float32)[tf.newaxis, ...]
+    return tf.keras.applications.inception_v3.preprocess_input(image_np)[tf.newaxis, ...]
 
-def extract_local_features(image_path):
-    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    orb = cv2.ORB_create()
-    _, descriptors = orb.detectAndCompute(image, None)
-    return descriptors
+def extract_features(image_path):
+    image_tensor = preprocess_image(image_path)
+    features = inception_v3(image_tensor)
+    return features.numpy().flatten()
 
-def preprocess_and_extract(image_path):
-    return preprocess_image(image_path), extract_local_features(image_path)
-
-def compare_images(query_image_path, database_paths, model):
-    _, query_descriptors = preprocess_and_extract(query_image_path)
+def compare_images(query_image_path, database_paths):
+    query_features = extract_features(query_image_path)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = list(executor.map(preprocess_and_extract, database_paths))
+        database_features = list(executor.map(extract_features, database_paths))
     best_match_index = -1
     best_match_score = -float('inf')
-    for i, (_, db_descriptors) in enumerate(results):
-        if db_descriptors is None:
-            continue
-        score = calculate_similarity(query_descriptors, db_descriptors)
+    for i, db_features in enumerate(database_features):
+        score = cosine_similarity([ query_features ], [ db_features ])[0][0]
         if score > best_match_score:
             best_match_score = score
             best_match_index = i
+    similarity_percentage = round(best_match_score * 100, 4)
     return {
-        "image_path": database_paths[best_match_index],
-        "similarity_score": best_match_score
+        'image_path': database_paths[best_match_index],
+        'similarity_score': similarity_percentage
     }
 
-def calculate_similarity(query_descriptors, db_descriptors):
-    bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-    matches = bf.match(query_descriptors, db_descriptors)
-    matches = sorted(matches, key=lambda x: x.distance)
-    if not matches:
-        return 0
-    avg_distance = sum(match.distance for match in matches) / len(matches)
-    similarity_percentage = (1 - avg_distance / 256) * 100
-    return similarity_percentage
+async def remove_background(image: Image.Image) -> Image.Image:
+    img_byte_arr = io.BytesIO()
+    image.save(img_byte_arr, format='PNG')
+    img_byte_arr = img_byte_arr.getvalue()
+    output = remove(img_byte_arr)
+    return Image.open(io.BytesIO(output))
