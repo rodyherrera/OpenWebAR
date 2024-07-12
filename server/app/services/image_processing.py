@@ -33,7 +33,6 @@ async def remove_background(image: Image.Image) -> Image.Image:
     return Image.open(io.BytesIO(output))
 
 async def save_image_with_background_removed(content: bytes, file_path: str) -> None:
-    loop = asyncio.get_event_loop()
     with Image.open(io.BytesIO(content)) as img:
         img_without_bg = await remove_background(img)
         img_without_bg.save(file_path, 'WEBP')

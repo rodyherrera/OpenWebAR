@@ -1,13 +1,47 @@
 from uuid import uuid4
-from typing import List
+from typing import List, Dict, Any, Optional
 from PIL import Image, ExifTags
 from fastapi import UploadFile
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.core.config import settings
 from app.services.image_processing import remove_background
+from bson import ObjectId
 import os, io, asyncio
 
 num_threads = os.cpu_count()
+
+async def fetch_data(
+    db: AsyncIOMotorDatabase, 
+    collection: str, query: 
+    Optional[Dict[str, Any]] = None, 
+    projection: Optional[Dict[str, Any]] = None
+) -> List[Dict[str, Any]]:
+    cursor = db[collection].find(query or {}, projection)
+    data = []
+    async for doc in cursor:
+        if '_id' in doc:
+            doc['_id'] = str(doc['_id'])
+        data.append(doc)
+    return data
+
+async def fetch_objects(db: AsyncIOMotorDatabase, user_id: str) -> List[dict]:
+    return await fetch_data(db, 'object', { 'user': user_id })
+
+async def fetch_objects_samples_urls(db: AsyncIOMotorDatabase) -> List[str]:
+    data = await fetch_data(db, 'object', projection={ 'samples': 1, '_id': 0 })
+    samples_urls = []
+    for doc in data:
+        samples_urls.extend(doc.get('samples', []))
+    return samples_urls
+
+async def delete_object(db: AsyncIOMotorDatabase, object_id: str, user_id: str) -> bool:
+    result = await db.object.delete_one({ '_id': ObjectId(object_id), 'user': user_id })
+    return result.deleted_count > 0
+
+async def insert_object(db: AsyncIOMotorDatabase, new_object: dict) -> dict:
+    result = await db.object.insert_one(new_object)
+    new_object['_id'] = str(result.inserted_id)
+    return new_object
 
 async def fetch_objects_samples_urls(db: AsyncIOMotorDatabase) -> List[str]:
     cursor = db.object.find({ }, { 'samples': 1, '_id': 0 })

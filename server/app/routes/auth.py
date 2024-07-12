@@ -13,9 +13,15 @@ from app.services.auth import (
 
 router = APIRouter()
 
+async def check_existing_user(db: AsyncIOMotorDatabase, username: str):
+    return await db.user.find_one({ 'username': username })
+
+async def insert_new_user(db: AsyncIOMotorDatabase, user_dict: dict):
+    await db.user.insert_one(user_dict)
+
 @router.post('/sign-up/', response_model=AuthResponseModel)
 async def signup(user: UserCreateModel, db: AsyncIOMotorDatabase = Depends(get_db_dependency)):
-    existing_user = await db.user.find_one({ 'username': user.username })
+    existing_user = await check_existing_user(db, user.username)
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -24,7 +30,7 @@ async def signup(user: UserCreateModel, db: AsyncIOMotorDatabase = Depends(get_d
     user_dict = user.dict()
     user_dict['hashed_password'] = get_password_hash(user.password)
     del user_dict['password']
-    await db.user.insert_one(user_dict)
+    await insert_new_user(db, user_dict)
     return await create_user_response(user.username, user.email)
 
 @router.post('/sign-in/', response_model=AuthResponseModel)
@@ -34,7 +40,7 @@ async def signin(login: LoginModel):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Incorrect username or password',
-            headers={ 'WWW-Authenticate': 'Bearer' }
+            headers={'WWW-Authenticate': 'Bearer'}
         )
     return await create_user_response(user['username'], user['email'])
 
