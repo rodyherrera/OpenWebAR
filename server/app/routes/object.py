@@ -6,18 +6,9 @@ from app.db.connection import get_db_dependency
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.services.auth import get_current_user
 from typing import List
-import concurrent.futures
-import asyncio
 
 router = APIRouter()
  
-async def save_files_concurrently(new_object, files):
-    loop = asyncio.get_running_loop()
-    with concurrent.futures.ThreadPoolExecutor() as pool:
-        futures = [loop.run_in_executor(pool, save_files_and_update_object, new_object, [file]) for file in files]
-        results = await asyncio.gather(*futures)
-    return results
-
 @router.post('/', response_model=ObjectResponseSchema)
 async def create_object(
     name: str = Form(...),
@@ -33,16 +24,14 @@ async def create_object(
             'user': current_user['_id'],
             'samples': []
         }
-        results = await save_files_concurrently(new_object, files)
-        for result in results:
-            new_object = result
+        new_object = await save_files_and_update_object(new_object, files)
         new_object = await insert_object(db, new_object)
         return {
             'status': 'success',
             'data': new_object
         }
     except Exception as e:
-        print('@create_object: ' + e)
+        print('@create_object: ' + str(e))
         raise HTTPException(status_code=400, detail=str(e))
     
 @router.get('/me/', response_model=ObjectListResponseSchema)

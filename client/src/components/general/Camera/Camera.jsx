@@ -8,12 +8,10 @@ import useParticles from '@hooks/useParticles';
 import '@utilities/aframeRoundedBox';
 import './Camera.css';
 
-// request geolocation
 const Camera = () => {
     const cameraContainerRef = useRef(null);
     const requestPermissionsRef = useRef(null);
-    const { videoRef, cameraPermissionDenied } = useCamera();
-    const { isSending, takeFrameAndSend } = useFrameSender(videoRef);
+    const { isSending, takeFrameAndSend } = useFrameSender();
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
 
     useEffect(() => {
@@ -21,16 +19,7 @@ const Camera = () => {
         requestPermissionsRef.current.addEventListener('click', requestDeviceMotionPermission);
     }, [requestPermissionsRef]);
 
-    useEffect(() => {
-        console.log(videoRef.current)
-        return () => {
-            if(videoRef.current && videoRef.current.srcObject){
-                videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-            }
-        };
-    }, []);
-
-    return (cameraPermissionDenied) ? (
+    return (false) ? (
         <p>Permission denied. Please allow camera access.</p>
     ) : (
         <div className='Camera-Container' ref={cameraContainerRef}>
@@ -41,9 +30,8 @@ const Camera = () => {
             />
             <CameraHeader />
             <a-scene
-                ref={videoRef}
                 device-orientation-permission-ui="enabled: false"
-                arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false'
+                arjs='sourceType: webcam; videoTexture: true; debugUIEnabled: false;'
                 renderer='antialias: true; alpha: true'
             >
                 <a-camera gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723'></a-camera>
@@ -66,7 +54,6 @@ const Camera = () => {
                     shadow="cast: true; receive: true"
                 ></a-rounded-box>
             </a-scene>
-            {/*<video className='Camera-Video' ref={videoRef} autoPlay playsInline muted />*/}
             <CameraFooter takeFrameAndSend={takeFrameAndSend} />
         </div>
     );

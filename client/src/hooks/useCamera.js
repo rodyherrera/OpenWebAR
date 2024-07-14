@@ -1,11 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
 
 const useCamera = () => {
-    const videoRef = useRef(null);
     const [cameraPermissionsDenied, setCameraPermissionDenied] = useState(false);
 
     const requestCameraPermission = async () => {
         try{
+            const video = document.querySelector('video');
             const constraints = {
                 video: {
                     facingMode: 'environment',
@@ -14,7 +14,7 @@ const useCamera = () => {
                 }
             };
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
-            if(videoRef.current) videoRef.current.srcObject = stream;
+            if(video) video.srcObject = stream;
         }catch{
             setCameraPermissionDenied(true);
         }
@@ -22,14 +22,9 @@ const useCamera = () => {
 
     useEffect(() => {
         requestCameraPermission();
-        return () => {
-            if(videoRef.current && videoRef.current.srcObject){
-                videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-            }
-        };
     }, []);
 
-    return { videoRef, cameraPermissionsDenied };
+    return { cameraPermissionsDenied };
 };
 
 export default useCamera;
