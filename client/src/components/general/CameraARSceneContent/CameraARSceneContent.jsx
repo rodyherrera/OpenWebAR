@@ -2,6 +2,7 @@ import React from 'react';
 import ContainedText from '@components/aframe/ContainedText';
 import RoundedImage from '@components/aframe/RoundedImage'
 import RoundedBox from '@components/aframe/RoundedBox';
+import RoundedVideo from '@components/aframe/RoundedVideo';
 import Text from '@components/aframe/Text';
 
 const ARSceneContent = () => (
@@ -36,7 +37,7 @@ const ARSceneContent = () => (
             value='Agregar al carrito'
         />
 
-        <a-rounded-video
+        <RoundedVideo
             src='/jv-add.mp4'
             autoplay='true'
             width='1.8'
