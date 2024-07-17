@@ -1,5 +1,6 @@
 import React from 'react';
 import ContainedText from '@components/aframe/ContainedText';
+import RoundedImage from '@components/aframe/RoundedImage'
 
 const ARSceneContent = () => (
     <a-entity
@@ -7,12 +8,7 @@ const ARSceneContent = () => (
         gps-new-entity-place='latitude: 51.05; longitude: -0.723'
         scale='50 50 50'
     >
-        <a-rounded-image
-            src='/Walmart.png'
-            radius='0.1'
-            width='0.5'
-            height='0.5'
-            position='0 .65 1' />
+        <RoundedImage src='/Walmart.png' position='0 .65 1' />
 
         <ContainedText
             width='1.7'
@@ -71,13 +67,11 @@ const ARSceneContent = () => (
             rotation='-20 0 0'
             position='0 -1.45 1' />
 
-        <a-rounded-image
-            src='/juan-valdez-logo.png'
-            radius='0.1'
-            width='1'
-            height='.5'
+        <RoundedImage 
             rotation='-20 0 0'
-            position='0 -2.5 1' />
+            position='0 -2.5 1'
+            src='/juan-valdez-logo.png' 
+            width='1' />
     </a-entity>
 );
 
