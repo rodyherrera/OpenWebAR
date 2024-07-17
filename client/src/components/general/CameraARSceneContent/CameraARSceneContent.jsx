@@ -10,7 +10,18 @@ const ARSceneContent = () => (
         look-at='[gps-new-camera]'
         gps-new-entity-place='latitude: 51.05; longitude: -0.723'
         scale='50 50 50'
+        raycaster="objects: .clickable"
+        emitevents="true"
+        cursor="fuse: false; rayOrigin: mouse;"
     >
+        <a-entity
+            position='-3 0 0'
+            class='clickable'
+            gltf-model='/hamburger_photorealistic.glb'
+            gesture-handler="minScale: 0.25; maxScale: 10"
+            scale='1 1 1'
+        />
+
         <RoundedImage src='/Walmart.png' position='0 .65 1' />
 
         <ContainedText
@@ -39,7 +50,7 @@ const ARSceneContent = () => (
 
         <RoundedVideo
             src='/jv-add.mp4'
-            autoplay='true'
+            autoplay='false'
             width='1.8'
             height='1'
             radius='.05'
