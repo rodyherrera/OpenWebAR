@@ -1,4 +1,4 @@
-import RoundedElement from '@utilities/roundedElement';
+import RoundedElement from '@components/aframe/roundedElement';
 
 AFRAME.registerComponent('rounded', {
     schema: {

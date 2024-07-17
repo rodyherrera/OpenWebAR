@@ -59,4 +59,4 @@ AFRAME.registerComponent('event-set', {
     removeEventListener(){
         this.el.removeEventListener(this.eventName, this.eventHandler);
     }
-})
+});

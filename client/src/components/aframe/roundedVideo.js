@@ -1,4 +1,4 @@
-import RoundedElement from '@utilities/roundedElement';
+import RoundedElement from '@components/aframe/roundedElement';
 
 AFRAME.registerComponent('rounded-video', {
     schema: {
@@ -21,6 +21,7 @@ AFRAME.registerComponent('rounded-video', {
         this.videoEl = document.createElement('video');
         this.videoEl.setAttribute('crossorigin', 'anonymous');
         this.videoEl.setAttribute('playsinline', '');
+        this.videoEl.preload = 'auto';
         this.createMesh();
     },
     
@@ -61,6 +62,8 @@ AFRAME.registerComponent('rounded-video', {
         this.videoEl.autoplay = autoplay;
         this.videoEl.loop = loop;
         const texture = new THREE.VideoTexture(this.videoEl);
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
         texture.flipY = true;
         this.mesh.material.map = texture;
         this.mesh.material.needsUpdate = true;
@@ -71,6 +74,11 @@ AFRAME.registerComponent('rounded-video', {
         if(this.videoEl){
             this.videoEl.pause();
             this.videoEl.src = '';
+            this.videoEl.load();
+        }
+        if(this.mesh && this.mesh.material.map){
+            this.mesh.material.map.dispose();
+            this.mesh.material.map = null;
         }
     },
     
