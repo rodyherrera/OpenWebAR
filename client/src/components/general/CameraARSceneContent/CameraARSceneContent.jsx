@@ -2,6 +2,7 @@ import React from 'react';
 import ContainedText from '@components/aframe/ContainedText';
 import RoundedImage from '@components/aframe/RoundedImage'
 import RoundedBox from '@components/aframe/RoundedBox';
+import Text from '@components/aframe/Text';
 
 const ARSceneContent = () => (
     <a-entity
@@ -21,25 +22,10 @@ const ARSceneContent = () => (
 
         <RoundedBox width='2.5' height='1.3' position='0 -0.55 0' />
         
-        <a-text
-            color='#333333'
-            position='-1.08 -0.045 0.1'
-            width='2'
-            value='Café Volcan Grano Molido Fuerte, 250 gr'
-            rotation='0 0 0' />
-
-        <a-text
-            color='#333333' 
-            width='2'
-            position='0.6 -0.045 0.1'
-            value='$9.990 CLP' />
+        <Text position='-1.08 -0.045 0.1' value='Café Volcan Grano Molido Fuerte, 250 gr' />
+        <Text position='0.6 -0.045 0.1' value='$9.990 CLP' />
+        <Text position='-1.08 -0.4 0.1' value='Peferido por los amantes de las sensaciones perdurables. Ideal para disfrutar en la preparación de un espresso. Aroma muy pronunciado y aromático, acidez baja, cuerpo alto.' />
             
-        <a-text
-            color='#333333'
-            width='2'
-            position='-1.08 -0.4 0.1'
-            value='Peferido por los amantes de las sensaciones perdurables. Ideal para disfrutar en la preparación de un espresso. Aroma muy pronunciado y aromático, acidez baja, cuerpo alto.  ' />
-        
         <ContainedText
             backgroundColor='#0071DC'
             width='2'

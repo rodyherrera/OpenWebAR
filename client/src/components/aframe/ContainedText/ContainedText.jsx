@@ -1,5 +1,6 @@
 import React from 'react';
 import RoundedBox from '@components/aframe/RoundedBox';
+import Text from '@components/aframe/Text';
 
 const ContainedText = ({
     width,
@@ -26,7 +27,7 @@ const ContainedText = ({
                 radius={radius}
                 position={position} 
                 rotation={rotation} />
-            <a-text 
+            <Text 
                 color={color}
                 position={fontPosition}
                 width={width}
