@@ -1,4 +1,5 @@
 import React from 'react';
+import RoundedBox from '@components/aframe/RoundedBox';
 
 const ContainedText = ({
     width,
@@ -16,7 +17,7 @@ const ContainedText = ({
 }) => {
     return (
         <React.Fragment>
-          <a-rounded-box
+            <RoundedBox
                 width={width}
                 height={height}
                 color={backgroundColor}

@@ -1,6 +1,7 @@
 import React from 'react';
 import ContainedText from '@components/aframe/ContainedText';
 import RoundedImage from '@components/aframe/RoundedImage'
+import RoundedBox from '@components/aframe/RoundedBox';
 
 const ARSceneContent = () => (
     <a-entity
@@ -18,15 +19,7 @@ const ARSceneContent = () => (
             align='center'
             value='Walmart Chile S.A' />
 
-        <a-rounded-box
-            width='2.5'
-            height='1.3'
-            color='#FFFFFF'
-            opacity='.8'
-            radius='.15'
-            position='0 -0.55 0'
-            rotation='0 0 0'
-            depth='0' />
+        <RoundedBox width='2.5' height='1.3' position='0 -0.55 0' />
         
         <a-text
             color='#333333'
