@@ -18,6 +18,7 @@
     "@react-three/fiber": "^8.16.8",
     "@reduxjs/toolkit": "^2.2.6",
     "@tensorflow-models/body-pix": "^2.2.1",
+    "@tensorflow-models/handpose": "^0.1.0",
     "@tensorflow/tfjs": "^4.20.0",
     "@types/three": "^0.166.0",
     "aframe": "^1.6.0",

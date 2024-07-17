@@ -3,6 +3,7 @@ import CameraHeader from '@components/general/CameraHeader';
 import CameraFooter from '@components/general/CameraFooter';
 import useFrameSender from '@hooks/useFrameSender';
 import useParticles from '@hooks/useParticles';
+import useHandposeModel from '@hooks/useHandposeModel';
 import Prompt from '@components/general/Prompt';
 import CameraScene from '@components/general/CameraScene';
 import './Camera.css';
@@ -12,11 +13,21 @@ const Camera = () => {
     const requestPermissionsRef = useRef(null);
     const { isSending, takeFrameAndSend } = useFrameSender();
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
+    const { loadHandposeModel, detectHands } = useHandposeModel();
 
     useEffect(() => {
         if(!requestPermissionsRef.current) return;
         requestPermissionsRef.current.addEventListener('click', requestDeviceMotionPermission);
     }, [requestPermissionsRef]);
+
+    useEffect(() => {
+        setTimeout(async () => {
+            console.log('loading model');
+            await loadHandposeModel();
+            console.log('detecting...');
+            await detectHands();
+        }, 3000);
+    }, []);
 
     return (
         <div className='Camera-Container' ref={cameraContainerRef}>
