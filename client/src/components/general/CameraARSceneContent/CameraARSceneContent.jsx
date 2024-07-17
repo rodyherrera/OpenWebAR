@@ -1,4 +1,5 @@
 import React from 'react';
+import ContainedText from '@components/aframe/ContainedText';
 
 const ARSceneContent = () => (
     <a-entity
@@ -13,161 +14,13 @@ const ARSceneContent = () => (
             height='0.5'
             position='0 .65 1' />
 
-        <a-rounded-box
-            width='1.2'
-            height='.3'
-            color='#FFFFFF'
-            opacity='.8'
-            radius='.15'
+        <ContainedText
+            width='1.7'
+            height='.3' 
+            fontPosition='0 0.25 1'
             position='0 .33 0'
-        >
-            <a-text 
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#000000'
-                negate={false}
-                position='0 -0.08 1'
-                width='1.2'
-                align='center'
-                value={`Walmart Chile S.A`}
-            />
-        </a-rounded-box>
-
-        <a-rounded-box
-            width='2'
-            height='2'
-            color='#0071dc'
-            opacity='.8'
-            radius='.15'
-            rotation='0 -40 0'
-            position='2.6 -0.55 0'
-        >
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 0.5 0.1'
-                value='Descripción' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.3 0.5 0.1'
-                value='Café Volcan Grano Molido Fuerte' />    
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 0.3 0.1'
-                value='Marca' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.4 0.3 0.1'
-                value='Juan Valdez' />    
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 0.1 0.1'
-                value='Tipo de producto' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.65 0.1 0.1'
-                value='Café' />   
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 -0.1 0.1'
-                value='Páis de origen' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.7 -0.1 0.1'
-                value='CL' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 -0.3 0.1'
-                value='Desc. Técnica' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.1 -0.3 0.1'
-                value='Ideal para Espresso' />     
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 -0.5 0.1'
-                value='Condición Alimentaria' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.24 -0.5 0.1'
-                value='Libre de Lactosa' />   
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='-0.8 -0.7 0.1'
-                value='Contenido neto' />
-
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#FFFFFF'
-                negate={false}
-                width='1.8'
-                position='0.6 -0.7 0.1'
-                value='250 g' />  
-        </a-rounded-box>
+            align='center'
+            value='Walmart Chile S.A' />
 
         <a-rounded-box
             width='2.5'
@@ -176,53 +29,37 @@ const ARSceneContent = () => (
             opacity='.8'
             radius='.15'
             position='0 -0.55 0'
-        >
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#121212'
-                negate={false}
-                width='1.8'
-                position='-1.06 0.5 0.1'
-                value='Café Volcan Grano Molido Fuerte, 250 gr' />
+            rotation='0 0 0'
+            depth='0' />
+        
+        <a-text
+            color='#333333'
+            position='-1.08 -0.045 0.1'
+            width='2'
+            value='Café Volcan Grano Molido Fuerte, 250 gr'
+            rotation='0 0 0' />
 
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#121212'
-                negate={false}
-                width='1.8'
-                position='-1.06 0.2 0.1'
-                value='Peferido por los amantes de las sensaciones perdurables. Ideal para disfrutar en la preparación de un espresso. Aroma muy pronunciado y aromático, acidez baja, cuerpo alto.  ' />
+        <a-text
+            color='#333333' 
+            width='2'
+            position='0.6 -0.045 0.1'
+            value='$9.990 CLP' />
             
-            <a-text
-                font='/aframe-msdf.json'
-                font-image='/aframe.png'
-                color='#000000' 
-                negate={false}
-                width='1.8'
-                position='0.6 0.5 0.1'
-                value='$9.990 CLP' />
-            
-            <a-rounded-box
-                width='2'
-                height='.3'
-                color='#0071dc'
-                opacity='.8'
-                radius='.15'
-                position='0 -0.3 .3'
-            >
-                <a-text
-                    font='/aframe-msdf.json'
-                    font-image='/aframe.png'
-                    color='#FFFFFF' 
-                    negate={false}
-                    width='1.8'
-                    align='center'
-                    position='0 0.04 0.1'
-                    value='Agregar al carrito' />
-            </a-rounded-box>
-        </a-rounded-box>
+        <a-text
+            color='#333333'
+            width='2'
+            position='-1.08 -0.4 0.1'
+            value='Peferido por los amantes de las sensaciones perdurables. Ideal para disfrutar en la preparación de un espresso. Aroma muy pronunciado y aromático, acidez baja, cuerpo alto.  ' />
+        
+        <ContainedText
+            backgroundColor='#0071DC'
+            width='2'
+            height='.3'
+            color='#FFFFFF'
+            fontPosition='-0.32 -0.76 0.6'
+            position='0 -0.85 .3'
+            value='Agregar al carrito'
+        />
 
         <a-rounded-video
             src='/jv-add.mp4'

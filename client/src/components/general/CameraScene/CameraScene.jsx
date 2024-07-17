@@ -11,6 +11,7 @@ const CameraScene = () => (
         renderer='antialias: true; alpha: true;'
         vr-mode-ui='enabled: false'
         cursor='rayOrigin: mouse'
+        embedded
         raycaster='objects: [data-clickable]'
     >
         <a-camera gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723' />
