@@ -1,29 +1,35 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useRef, useCallback } from 'react';
 
 const DETECTION_INTERVAL = 500;
 const SWIPE_THRESHOLD = 100;
 const OPEN_HAND_THRESHOLD = 2500;
+const FINGERTIPS = [4, 8, 12, 16, 20];
+const BASES = [0, 5, 9, 13, 17];
 
 const useHandposeModel = () => {
-    const handposeWorkerRef = useRef(null);
-    const videoRef = useRef(null);
-    const isModelLoadedRef = useRef(null);
-    const lastDetectionTimeRef = useRef(null);
-    const lastPositionRef = useRef(null);
-    const isProcessingRef = useRef(null);
+    const refs = useRef({
+        worker: null,
+        video: null,
+        isModelLoaded: false,
+        lastDetectionTime: 0,
+        lastPosition: null,
+        isProcessing: false,
+        canvas: null,
+        ctx: null
+    }).current;
 
-    const loadHandposeModel = useCallback(async () => {
-        if(handposeWorkerRef.current) return;
+    const loadHandposeModel = useCallback(() => {
+        if(refs.worker) return;
         try{
-            handposeWorkerRef.current = new Worker(new URL('/handpose-worker.js', import.meta.url));
-            handposeWorkerRef.current.addEventListener('message', ({ data }) => {
+            refs.worker = new Worker(new URL('/handpose-worker.js', import.meta.url));
+            refs.worker.onmessage = ({ data }) => {
                 if(data.type === 'modelLoaded'){
-                    isModelLoadedRef.current = true;
+                    refs.isModelLoaded = true;
                 }else if(data.type === 'predictions'){
                     detectGestures(data.predictions);
-                    isProcessingRef.current = false;
+                    refs.isProcessing = false;
                 }
-            });
+            };
         }catch(error){
             console.error('(@hooks/useHandposeModel.js): Error loading handpose model ->', error);
         }
@@ -31,67 +37,55 @@ const useHandposeModel = () => {
 
     const detectSwipe = useCallback((landmarks) => {
         const currentPosition = landmarks[0];
-        if(lastPositionRef.current){
-            const dx = currentPosition[0] - lastPositionRef.current[0];
+        if(refs.lastPosition){
+            const dx = currentPosition[0] - refs.lastPosition[0];
             if(Math.abs(dx) > SWIPE_THRESHOLD){
                 console.log(dx > 0 ? 'Swipe Right' : 'Swipe Left');
             }
         }
-        lastPositionRef.current = currentPosition;
+        refs.lastPosition = currentPosition;
     }, []);
 
     const isOpenHand = useCallback((landmarks) => {
-        const fingertips = [4, 8, 12, 16, 20];
-        const bases = [0, 5, 9, 13, 17];
-        return fingertips.every((tip, i) => {
-            const [dx, dy, dz] = landmarks[tip].map((coord, j) => coord - landmarks[bases[i]][j]);
-            return dx * dx + dy * dy + dz * dz >= OPEN_HAND_THRESHOLD;
-        });
+        for(let i = 0; i < FINGERTIPS.length; i++){
+            const [dx, dy, dz] = [0, 1, 2].map(j => landmarks[FINGERTIPS[i]][j] - landmarks[BASES[i]][j]);
+            if(dx * dx + dy * dy + dz * dz < OPEN_HAND_THRESHOLD) return false;
+        }
+        return true;
     }, []);
 
     const detectGestures = useCallback((predictions) => {
-        predictions.forEach(({ landmarks }) => {
+        for(const { landmarks } of predictions){
             detectSwipe(landmarks);
-            if(isOpenHand(landmarks)){
-                console.log('Hands open!');
-            }
-        });
+            if(isOpenHand(landmarks)) console.log('Hands open!');
+        }
     }, [detectSwipe, isOpenHand]);
 
     const detectHands = useCallback(() => {
-        if(!isModelLoadedRef.current || isProcessingRef.current){
+        if(!refs.isModelLoaded || refs.isProcessing || Date.now() - refs.lastDetectionTime < DETECTION_INTERVAL){
             requestAnimationFrame(detectHands);
             return;
         }
-        const now = Date.now();
-        if(now - lastDetectionTimeRef.current < DETECTION_INTERVAL){
-            requestAnimationFrame(detectHands);
-            return;
-        }
-        lastDetectionTimeRef.current = now;
-        if(!videoRef.current) videoRef.current = document.querySelector('video');
-        if(videoRef.current){
-            const canvas = document.createElement('canvas');
-            canvas.width = videoRef.current.videoWidth;
-            canvas.height = videoRef.current.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-            const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            isProcessingRef.current = true;
-            handposeWorkerRef.current.postMessage({
+        refs.lastDetectionTime = Date.now();
+        if(!refs.video) refs.video = document.querySelector('video');
+        if(refs.video){
+            if(!refs.canvas){
+                refs.canvas = document.createElement('canvas');
+                refs.ctx = refs.canvas.getContext('2d');
+            }
+            refs.canvas.width = refs.video.videoWidth;
+            refs.canvas.height = refs.video.videoHeight;
+            refs.ctx.drawImage(refs.video, 0, 0, refs.canvas.width, refs.canvas.height);
+            const pixels = refs.ctx.getImageData(0, 0, refs.canvas.width, refs.canvas.height);
+            refs.isProcessing = true;
+            refs.worker.postMessage({
                 type: 'detect',
                 pixels,
-                width: canvas.width,
-                height: canvas.height
+                width: refs.canvas.width,
+                height: refs.canvas.height
             }, [pixels.data.buffer]);
         }
         requestAnimationFrame(detectHands);
-    }, []);
-
-    useEffect(() => {
-        return () => {
-            if(handposeWorkerRef.current) handposeWorkerRef.current.terminate();
-        };
     }, []);
 
     return { detectHands, loadHandposeModel };
