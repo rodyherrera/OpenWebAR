@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "outDir": "./dist",
+        "paths": {
+            "@utilities/*": ["./utilities/*"],
+            "@config/*": ["./config/*"],
+            "@controllers/*": ["./controllers/*"],
+            "@services/*": ["./services/*"]
+        }
+    },
+    "include": ["."],
+    "exclude": ["node_modules"]
+}
+  

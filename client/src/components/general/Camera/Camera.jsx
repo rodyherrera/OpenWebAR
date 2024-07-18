@@ -13,7 +13,7 @@ const Camera = () => {
     const requestPermissionsRef = useRef(null);
     const { isSending, takeFrameAndSend } = useFrameSender();
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
-    const { loadHandposeModel, detectHands } = useHandposeModel();
+    const { detectGestures, isConnected } = useHandposeModel();
 
     useEffect(() => {
         if(!requestPermissionsRef.current) return;
@@ -21,11 +21,11 @@ const Camera = () => {
     }, [requestPermissionsRef]);
 
     useEffect(() => {
-        setTimeout(async () => {
-            await loadHandposeModel();
-            await detectHands();
-        }, 3000);
-    }, []);
+        if(!isConnected) return;
+        setTimeout(() => {
+            detectGestures();
+        }, 2000);
+    }, [isConnected]);
 
     return (
         <div className='Camera-Container' ref={cameraContainerRef}>

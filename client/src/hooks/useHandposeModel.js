@@ -1,94 +1,55 @@
-import { useRef, useCallback } from 'react';
-
-const DETECTION_INTERVAL = 500;
-const SWIPE_THRESHOLD = 100;
-const OPEN_HAND_THRESHOLD = 2500;
-const FINGERTIPS = [4, 8, 12, 16, 20];
-const BASES = [0, 5, 9, 13, 17];
+import { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 
 const useHandposeModel = () => {
-    const refs = useRef({
-        worker: null,
-        video: null,
-        isModelLoaded: false,
-        lastDetectionTime: 0,
-        lastPosition: null,
-        isProcessing: false,
-        canvas: null,
-        ctx: null
-    }).current;
+    const [socket, setSocket] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
 
-    const loadHandposeModel = useCallback(() => {
-        if(refs.worker) return;
-        try{
-            refs.worker = new Worker(new URL('/handpose-worker.js', import.meta.url));
-            refs.worker.onmessage = ({ data }) => {
-                if(data.type === 'modelLoaded'){
-                    refs.isModelLoaded = true;
-                }else if(data.type === 'predictions'){
-                    detectGestures(data.predictions);
-                    refs.isProcessing = false;
-                }
-            };
-        }catch(error){
-            console.error('(@hooks/useHandposeModel.js): Error loading handpose model ->', error);
-        }
+    useEffect(() => {
+        const wSocket = io('wss://8080--main--trinity--rodyherrera--c3cp3puaetl6s.pit-1.try.coder.app', {
+            transports: ['websocket'],
+            reconnectionDelayMax: 10000
+        });
+
+        wSocket.on('connect', () => {
+            setIsConnected(true);
+            console.log('Socket connected');
+        });
+
+        wSocket.on('disconnect', () => {
+            setIsConnected(false);
+            console.log('Socket disconnected');
+        });
+
+        setSocket(wSocket);
+
+        return () => {
+            wSocket.disconnect();
+        };
     }, []);
 
-    const detectSwipe = useCallback((landmarks) => {
-        const currentPosition = landmarks[0];
-        if(refs.lastPosition){
-            const dx = currentPosition[0] - refs.lastPosition[0];
-            if(Math.abs(dx) > SWIPE_THRESHOLD){
-                console.log(dx > 0 ? 'Swipe Right' : 'Swipe Left');
+    const detectGestures = () => {
+        const canvas = document.createElement('canvas');
+        const scale = 0.5;
+        const video = document.querySelector('video');
+        canvas.width = video.videoWidth * scale;
+        canvas.height = video.videoHeight * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        canvas.toBlob(async (blob) => {
+            if(!blob){
+                console.error('Failed to create blob from canvas');
+                return;
             }
-        }
-        refs.lastPosition = currentPosition;
-    }, []);
-
-    const isOpenHand = useCallback((landmarks) => {
-        for(let i = 0; i < FINGERTIPS.length; i++){
-            const [dx, dy, dz] = [0, 1, 2].map(j => landmarks[FINGERTIPS[i]][j] - landmarks[BASES[i]][j]);
-            if(dx * dx + dy * dy + dz * dz < OPEN_HAND_THRESHOLD) return false;
-        }
-        return true;
-    }, []);
-
-    const detectGestures = useCallback((predictions) => {
-        for(const { landmarks } of predictions){
-            detectSwipe(landmarks);
-            if(isOpenHand(landmarks)) console.log('Hands open!');
-        }
-    }, [detectSwipe, isOpenHand]);
-
-    const detectHands = useCallback(() => {
-        if(!refs.isModelLoaded || refs.isProcessing || Date.now() - refs.lastDetectionTime < DETECTION_INTERVAL){
-            requestAnimationFrame(detectHands);
-            return;
-        }
-        refs.lastDetectionTime = Date.now();
-        if(!refs.video) refs.video = document.querySelector('video');
-        if(refs.video){
-            if(!refs.canvas){
-                refs.canvas = document.createElement('canvas');
-                refs.ctx = refs.canvas.getContext('2d');
+            if(socket && isConnected){
+                socket.emit('image', blob);
+            }else{
+                console.error('Socket is not connected');
             }
-            refs.canvas.width = refs.video.videoWidth;
-            refs.canvas.height = refs.video.videoHeight;
-            refs.ctx.drawImage(refs.video, 0, 0, refs.canvas.width, refs.canvas.height);
-            const pixels = refs.ctx.getImageData(0, 0, refs.canvas.width, refs.canvas.height);
-            refs.isProcessing = true;
-            refs.worker.postMessage({
-                type: 'detect',
-                pixels,
-                width: refs.canvas.width,
-                height: refs.canvas.height
-            }, [pixels.data.buffer]);
-        }
-        requestAnimationFrame(detectHands);
-    }, []);
+        }, 'image/webp', 0.8);
+    };
 
-    return { detectHands, loadHandposeModel };
+    return { detectGestures, isConnected };
 };
 
 export default useHandposeModel;
