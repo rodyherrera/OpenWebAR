@@ -2,6 +2,7 @@ const { parentPort } = require('worker_threads');
 const tf = require('@tensorflow/tfjs-node');
 const handpose = require('@tensorflow-models/handpose');
 const sharp = require('sharp');
+require('@tensorflow/tfjs-backend-wasm');
 
 const OPEN_HAND_THRESHOLD = 2500;
 const FINGERTIPS = [4, 8, 12, 16, 20];
@@ -12,7 +13,8 @@ let tensorPool = [];
 
 const loadModel = async () => {
     await tf.ready();
-    await tf.setBackend('cpu');
+    await tf.setBackend('wasm');
+    tf.enableProdMode();
     handposeModel = await handpose.load({
         maxContinuousChecks: 1,
         detectionConfidence: 0.8,

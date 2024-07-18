@@ -47,6 +47,11 @@ const useHandposeModel = () => {
         }
         if(!videoRef.current) videoRef.current = document.querySelector('video');
         if(!canvasRef.current) canvasRef.current = document.createElement('canvas');
+        // Check if the video is ready
+        if(videoRef.current.readyState !== 4){
+            animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
+            return;
+        }
         isProcessing.current = true;
         canvasRef.current.width = videoRef.current.videoWidth;
         canvasRef.current.height = videoRef.current.videoHeight;
