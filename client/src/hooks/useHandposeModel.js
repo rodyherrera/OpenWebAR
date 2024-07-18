@@ -1,9 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
+
+const CAPTURE_INTERVAL = 500;
 
 const useHandposeModel = () => {
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
+    const lastCaptureTimeRef = useRef(0);
+    const animationFrameIdRef = useRef(null);
 
     useEffect(() => {
         const wSocket = io('wss://8080--main--trinity--rodyherrera--c3cp3puaetl6s.pit-1.try.coder.app', {
@@ -25,31 +29,48 @@ const useHandposeModel = () => {
 
         return () => {
             wSocket.disconnect();
+            if(animationFrameIdRef.current){
+                cancelAnimationFrame(animationFrameIdRef.current);
+            }
         };
     }, []);
 
-    const detectGestures = () => {
-        const canvas = document.createElement('canvas');
-        const scale = 0.5;
-        const video = document.querySelector('video');
-        canvas.width = video.videoWidth * scale;
-        canvas.height = video.videoHeight * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(async (blob) => {
-            if(!blob){
-                console.error('Failed to create blob from canvas');
-                return;
-            }
-            if(socket && isConnected){
-                socket.emit('image', blob);
-            }else{
-                console.error('Socket is not connected');
-            }
-        }, 'image/webp', 0.8);
-    };
+    const captureAndSendFrame = useCallback((currentTime) => {
+        if(currentTime - lastCaptureTimeRef.current >= CAPTURE_INTERVAL){
+            const video = document.querySelector('video');
+            if(video && video.readyState === video.HAVE_ENOUGH_DATA){
+                const canvas = document.createElement('canvas');
+                const scale = 0.5;
+                canvas.width = video.videoWidth * scale;
+                canvas.height = video.videoHeight * scale;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob((blob) => {
+                    if(blob && socket && isConnected){
+                        socket.emit('image', blob);
+                    }
+                }, 'image/webp', 0.8);
 
-    return { detectGestures, isConnected };
+                lastCaptureTimeRef.current = currentTime;
+            }
+        }
+        animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
+    }, [socket, isConnected]);
+
+    const startDetection = useCallback(() => {
+        if(!animationFrameIdRef.current){
+            animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
+        }
+    }, [captureAndSendFrame]);
+
+    const stopDetection = useCallback(() => {
+        if(animationFrameIdRef.current){
+            cancelAnimationFrame(animationFrameIdRef.current);
+            animationFrameIdRef.current = null;
+        }
+    }, []);
+
+    return { startDetection, stopDetection, isConnected };
 };
 
 export default useHandposeModel;

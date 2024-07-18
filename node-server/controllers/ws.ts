@@ -1,13 +1,8 @@
 import { Socket, Server } from 'socket.io';
-import { blobToTensor, getPredictions } from '@services/handpose';
+import { getPredictions } from '@services/handpose';
 
-const imageHandler = async (blob: String, socket: Socket) => {
-    const tensor = await blobToTensor(blob);
-    if(!tensor){
-        console.log('@controllers/ws - imageHandler: error converting blob to tensor.');
-        return;
-    }
-    const predictions = await getPredictions(tensor);
+const imageHandler = async (blob: string, socket: Socket) => {
+    const predictions = await getPredictions(blob);
     socket.emit('gesture', predictions);
 };
 

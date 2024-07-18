@@ -13,7 +13,7 @@ const Camera = () => {
     const requestPermissionsRef = useRef(null);
     const { isSending, takeFrameAndSend } = useFrameSender();
     const { requestDeviceMotionPermission } = useParticles(cameraContainerRef);
-    const { detectGestures, isConnected } = useHandposeModel();
+    const { startDetection, isConnected } = useHandposeModel();
 
     useEffect(() => {
         if(!requestPermissionsRef.current) return;
@@ -23,7 +23,7 @@ const Camera = () => {
     useEffect(() => {
         if(!isConnected) return;
         setTimeout(() => {
-            detectGestures();
+            startDetection();
         }, 2000);
     }, [isConnected]);
 

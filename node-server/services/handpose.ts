@@ -1,62 +1,44 @@
-import tf from '@tensorflow/tfjs-node';
-import handpose, { AnnotatedPrediction, HandPose } from '@tensorflow-models/handpose';
-import { Coords3D } from '@tensorflow-models/handpose/dist/pipeline';
-import sharp from 'sharp';
+import { Worker } from 'worker_threads';
+import os from 'os';
 
-const OPEN_HAND_THRESHOLD = 2500;
-const FINGERTIPS = [4, 8, 12, 16, 20];
-const BASES = [0, 5, 9, 13, 17];
+const numCPUs = os.cpus().length;
+const workerPool: Worker[] = [];
 
-let handposeModel: null | HandPose = null;
+export const getPredictions = async (blob: string): Promise<any> => {
+    if(workerPool.length === 0){
+        throw new Error('@services/handpose.ts - getPredictions: worker pool not initialized.');
+    }
+    const worker = workerPool[Math.floor(Math.random() * workerPool.length)];
+    return new Promise((resolve, reject) => {
+        worker.postMessage({ type: 'predict', blob });
+        const messageHandler = (message: any) => {
+            if(message.type === 'result'){
+                worker.removeListener('message', messageHandler);
+                resolve(message.data);
+            }else if(message.type === 'error'){
+                worker.removeListener('message', messageHandler);
+                reject(new Error(message.message));
+            }
+        };
+        worker.on('message', messageHandler);
+    });
+};
 
 export const loadModel = async (): Promise<void> => {
-    console.log('@services/handpose.ts: loading tf model.');
-    tf.setBackend(process.env.TF_BACKEND || 'cpu');
-    handposeModel = await handpose.load();
-    console.log('@services/handpose.ts: tf model loaded.');
-};
-
-export const blobToTensor = async (blob: String): Promise<tf.Tensor3D | null> => {
-    try{
-        console.log('@services/handpose.ts: blob to tensor...');
-        const buffer = Buffer.from(blob, 'base64');
-        const image = await sharp(buffer)
-            .removeAlpha()
-            .raw()
-            .toBuffer({ resolveWithObject: true });
-        const tensor = tf.tensor3d(new Uint8Array(image.data), [image.info.height, image.info.width, 3]);
-        return tensor;
-    }catch(error){
-        console.log('@services/handpose.ts - blobToTensor:', error);
-        return null;
+    console.log('@services/handpose.ts: creating worker threads.');
+    for(let i = 0; i < numCPUs; i++){
+        await new Promise<void>((resolve, reject) => {
+            const worker = new Worker('./services/handposeWorker.cjs');
+            worker.on('message', (message: string) => {
+                if(message !== 'modelLoaded') return;
+                workerPool.push(worker);
+                resolve();
+            });
+            worker.on('error', reject);
+        });
     }
 };
 
-const isOpenHand = (landmarks: Coords3D): boolean => {
-    for(let i = 0; i < FINGERTIPS.length; i++){
-        const [dx, dy, dz] = [0, 1, 2].map(j => landmarks[FINGERTIPS[i]][j] - landmarks[BASES[i]][j]);
-        if(dx * dx + dy * dy + dz * dz < OPEN_HAND_THRESHOLD) return false;
-    }
-    return true;
-};
-
-const detectGestures = (predictions: AnnotatedPrediction[]) => {
-    if(predictions.length <= 0){
-        return { gesture: 'Handpose::NoDetection' };
-    }
-    for(const { landmarks } of predictions){
-        if(isOpenHand(landmarks)) console.log('Hands open!');
-    }
-};
-
-export const getPredictions = async (tensor: tf.Tensor3D) => {
-    if(!handposeModel){
-        console.log('@services/handpose.ts - getPredictions: model not loaded.');
-        return null;
-    }
-    console.log('@services/handpose.ts - predicting...');
-    const predictions = await handposeModel.estimateHands(tensor);
-    console.log('@services/handpose.ts - ok.');
-    const gesture = detectGestures(predictions);
-    return gesture;
-};
+process.on('exit', () => {
+    workerPool.forEach((worker) => worker.terminate());
+});
