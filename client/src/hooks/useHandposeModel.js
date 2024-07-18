@@ -1,70 +1,98 @@
-import * as tf from '@tensorflow/tfjs';
-import * as handpose from '@tensorflow-models/handpose';
-import '@tensorflow/tfjs-backend-webgl';
-import '@tensorflow/tfjs-backend-cpu';
+import { useEffect, useRef, useCallback } from 'react';
 
-let handposeModel = null;
-let lastDetectionTime = 0;
-const DETECTION_INTERVAL = 300;
+const DETECTION_INTERVAL = 500;
+const SWIPE_THRESHOLD = 100;
+const OPEN_HAND_THRESHOLD = 2500;
 
 const useHandposeModel = () => {
-    const isSupportedWebGL = () => {
+    const handposeWorkerRef = useRef(null);
+    const videoRef = useRef(null);
+    const isModelLoadedRef = useRef(null);
+    const lastDetectionTimeRef = useRef(null);
+    const lastPositionRef = useRef(null);
+    const isProcessingRef = useRef(null);
+
+    const loadHandposeModel = useCallback(async () => {
+        if(handposeWorkerRef.current) return;
         try{
-            const canvas = document.createElement('canvas');
-            return !!window.WebGLRenderingContext && canvas.getContext('webgl');
-        }catch(e){
-            return false;
+            handposeWorkerRef.current = new Worker(new URL('/handpose-worker.js', import.meta.url));
+            handposeWorkerRef.current.addEventListener('message', ({ data }) => {
+                if(data.type === 'modelLoaded'){
+                    isModelLoadedRef.current = true;
+                }else if(data.type === 'predictions'){
+                    detectGestures(data.predictions);
+                    isProcessingRef.current = false;
+                }
+            });
+        }catch(error){
+            console.error('(@hooks/useHandposeModel.js): Error loading handpose model ->', error);
         }
-    };
+    }, []);
 
-    const loadHandposeModel = async () => {
-        if(handposeModel !== null) return;
-        if(isSupportedWebGL()){
-            await tf.setBackend('webgl');
-        }else{
-            await tf.setBackend('cpu');
-        }
-        await tf.ready();
-        handposeModel = await handpose.load();
-    };
-
-    const isOpenHand = (landmarks) => {
-        const fingertips = [4, 8, 12, 16, 20];
-        const bases = [0, 5, 9, 13, 17];
-        for(let i = 0; i < fingertips.length; i++){
-            const dx = landmarks[fingertips[i]][0] - landmarks[bases[i]][0];
-            const dy = landmarks[fingertips[i]][1] - landmarks[bases[i]][1];
-            const dz = landmarks[fingertips[i]][2] - landmarks[bases[i]][2];
-            if(dx * dx + dy * dy + dz * dz < 2500) return false;
-        }
-        return true;
-    };
-
-    const detectGestures = (predictions) => {
-        for(const prediction of predictions){
-            const { landmarks } = prediction;
-            if(isOpenHand(landmarks)){
-                console.log('Hand is open!');
-            }else{
-                console.log('Nothing.');
+    const detectSwipe = useCallback((landmarks) => {
+        const currentPosition = landmarks[0];
+        if(lastPositionRef.current){
+            const dx = currentPosition[0] - lastPositionRef.current[0];
+            if(Math.abs(dx) > SWIPE_THRESHOLD){
+                console.log(dx > 0 ? 'Swipe Right' : 'Swipe Left');
             }
         }
-    };
+        lastPositionRef.current = currentPosition;
+    }, []);
 
-    const detectHands = async () => {
-        const now = Date.now();
-        if(now - lastDetectionTime < DETECTION_INTERVAL){
+    const isOpenHand = useCallback((landmarks) => {
+        const fingertips = [4, 8, 12, 16, 20];
+        const bases = [0, 5, 9, 13, 17];
+        return fingertips.every((tip, i) => {
+            const [dx, dy, dz] = landmarks[tip].map((coord, j) => coord - landmarks[bases[i]][j]);
+            return dx * dx + dy * dy + dz * dz >= OPEN_HAND_THRESHOLD;
+        });
+    }, []);
+
+    const detectGestures = useCallback((predictions) => {
+        predictions.forEach(({ landmarks }) => {
+            detectSwipe(landmarks);
+            if(isOpenHand(landmarks)){
+                console.log('Hands open!');
+            }
+        });
+    }, [detectSwipe, isOpenHand]);
+
+    const detectHands = useCallback(() => {
+        if(!isModelLoadedRef.current || isProcessingRef.current){
             requestAnimationFrame(detectHands);
             return;
         }
-        lastDetectionTime = now;
-        const video = document.querySelector('video');
-        const predictions = await handposeModel.estimateHands(video, { flipHorizontal: true });
-        if(predictions.length > 0){
-            detectGestures(predictions);
+        const now = Date.now();
+        if(now - lastDetectionTimeRef.current < DETECTION_INTERVAL){
+            requestAnimationFrame(detectHands);
+            return;
+        }
+        lastDetectionTimeRef.current = now;
+        if(!videoRef.current) videoRef.current = document.querySelector('video');
+        if(videoRef.current){
+            const canvas = document.createElement('canvas');
+            canvas.width = videoRef.current.videoWidth;
+            canvas.height = videoRef.current.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+            const pixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            isProcessingRef.current = true;
+            handposeWorkerRef.current.postMessage({
+                type: 'detect',
+                pixels,
+                width: canvas.width,
+                height: canvas.height
+            }, [pixels.data.buffer]);
         }
         requestAnimationFrame(detectHands);
-    };
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if(handposeWorkerRef.current) handposeWorkerRef.current.terminate();
+        };
+    }, []);
 
     return { detectHands, loadHandposeModel };
 };

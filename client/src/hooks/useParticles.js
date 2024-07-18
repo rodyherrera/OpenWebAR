@@ -77,9 +77,10 @@ const useParticles = (cameraContainerRef) => {
     }
 
     const requestDeviceMotionPermission = async () => {
-        if(typeof(DeviceMotionEvent) === 'undefined' && typeof(DeviceMotionEvent.requestPermission) !== 'function') return;
-        const response = await DeviceMotionEvent.requestPermission();
-        isDeviceMotionPermissionDenied.current = (response === 'granted');
+        if(typeof(DeviceMotionEvent) !== 'undefined' && typeof(DeviceMotionEvent.requestPermission) === 'function'){
+            const response = await DeviceMotionEvent.requestPermission();
+            isDeviceMotionPermissionDenied.current = (response === 'granted');
+        };
     }
 
     return { requestDeviceMotionPermission };

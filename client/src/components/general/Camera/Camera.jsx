@@ -22,9 +22,7 @@ const Camera = () => {
 
     useEffect(() => {
         setTimeout(async () => {
-            console.log('loading model');
             await loadHandposeModel();
-            console.log('detecting...');
             await detectHands();
         }, 3000);
     }, []);
