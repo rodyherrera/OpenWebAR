@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 
-const CAPTURE_INTERVAL = 500;
-
 const useHandposeModel = () => {
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
-    const lastCaptureTimeRef = useRef(0);
+    const [gesture, setGesture] = useState({});
+    const videoRef = useRef(null);
+    const isProcessing = useRef(false);
+    const canvasRef = useRef(null);
+    const canvasCtx = useRef(null);
     const animationFrameIdRef = useRef(null);
 
     useEffect(() => {
@@ -16,17 +18,20 @@ const useHandposeModel = () => {
         });
 
         wSocket.on('connect', () => {
+            console.log('@hooks/useHandposeModel: ws connected.');
             setIsConnected(true);
-            console.log('Socket connected');
         });
 
         wSocket.on('disconnect', () => {
             setIsConnected(false);
-            console.log('Socket disconnected');
+            console.log('@hooks/useHandposeModel: ws disconnected.');
         });
 
+        wSocket.on('gesture', (data) => {
+            setGesture(data);
+            isProcessing.current = false;
+        });
         setSocket(wSocket);
-
         return () => {
             wSocket.disconnect();
             if(animationFrameIdRef.current){
@@ -35,27 +40,23 @@ const useHandposeModel = () => {
         };
     }, []);
 
-    const captureAndSendFrame = useCallback((currentTime) => {
-        if(currentTime - lastCaptureTimeRef.current >= CAPTURE_INTERVAL){
-            const video = document.querySelector('video');
-            if(video && video.readyState === video.HAVE_ENOUGH_DATA){
-                const canvas = document.createElement('canvas');
-                const scale = 0.5;
-                canvas.width = video.videoWidth * scale;
-                canvas.height = video.videoHeight * scale;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                canvas.toBlob((blob) => {
-                    if(blob && socket && isConnected){
-                        socket.emit('image', blob);
-                    }
-                }, 'image/webp', 0.8);
-
-                lastCaptureTimeRef.current = currentTime;
-            }
+    const captureAndSendFrame = useCallback(() => {
+        if(!isConnected || isProcessing.current){
+            animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
+            return;
         }
-        animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
-    }, [socket, isConnected]);
+        if(!videoRef.current) videoRef.current = document.querySelector('video');
+        if(!canvasRef.current) canvasRef.current = document.createElement('canvas');
+        isProcessing.current = true;
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        if(!canvasCtx.current) canvasCtx.current = canvasRef.current.getContext('2d');
+        canvasCtx.current.drawImage(videoRef.current, 0, 0, canvasRef.current.width, canvasRef.current.height);
+        canvasRef.current.toBlob((blob) => {
+            socket.emit('image', blob);
+            animationFrameIdRef.current = requestAnimationFrame(captureAndSendFrame);
+        }, 'image/webp', 0.7);
+    }, [socket, isConnected, isProcessing]);
 
     const startDetection = useCallback(() => {
         if(!animationFrameIdRef.current){

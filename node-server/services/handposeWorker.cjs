@@ -11,11 +11,14 @@ let handposeModel = null;
 let tensorPool = [];
 
 const loadModel = async () => {
-    console.log('@services/handposeWorker.cjs: loading tf model...');
     await tf.ready();
     await tf.setBackend('cpu');
-    handposeModel = await handpose.load();
-    console.log('@services/handposeWorker.cjs: tf model loaded.');
+    handposeModel = await handpose.load({
+        maxContinuousChecks: 1,
+        detectionConfidence: 0.8,
+        iouThreshold: 0.3,
+        scoreThreshold: 0.75
+    });
 };
 
 const isOpenHand = (landmarks) => {

@@ -1,7 +1,7 @@
 import { Worker } from 'worker_threads';
 import os from 'os';
 
-const numCPUs = os.cpus().length;
+const numCPUs = Math.ceil(os.cpus().length / 2);
 const workerPool: Worker[] = [];
 
 export const getPredictions = async (blob: string): Promise<any> => {
@@ -31,6 +31,7 @@ export const loadModel = async (): Promise<void> => {
             const worker = new Worker('./services/handposeWorker.cjs');
             worker.on('message', (message: string) => {
                 if(message !== 'modelLoaded') return;
+                console.log('@services/handpose.ts: worker', i + 1, 'created.');
                 workerPool.push(worker);
                 resolve();
             });
