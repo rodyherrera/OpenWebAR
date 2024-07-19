@@ -22,9 +22,7 @@ const Camera = () => {
 
     useEffect(() => {
         if(!isConnected) return;
-        setTimeout(() => {
-            startDetection();
-        }, 2000);
+        startDetection();
     }, [isConnected]);
 
     return (
@@ -35,7 +33,7 @@ const Camera = () => {
                 buttonContainerProps={{ ref: requestDeviceMotionPermission }}
             />
             <CameraHeader />
-            <CameraScene />
+            {/*<CameraScene />*/}
             <CameraFooter takeFrameAndSend={takeFrameAndSend} />
         </div>
     );

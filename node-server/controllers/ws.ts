@@ -8,7 +8,6 @@ const imageHandler = async (blob: string, socket: Socket) => {
         return;
     }
     const gesture = await getPredictions(tensor);
-    console.log(gesture);
     socket.emit('gesture', gesture);
 };
 
