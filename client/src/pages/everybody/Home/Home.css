@@ -1,0 +1,49 @@
+#Home-Desktop-Experience-Main{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1050px;
+    margin: 0 auto;
+}
+
+#Home-Desktop-Experience-Header-Container{
+    display: flex;
+    flex-direction: column;
+    max-width: 60%;
+    border-right: 1px solid #1d1d1f;
+    gap: 1rem;
+}
+
+#Home-Desktop-Experience-Title{
+    font-size: 1.8rem;
+    max-width: 90%;
+}
+
+#Home-Desktop-Experience-Description{
+    font-size: .85rem;
+    max-width: 90%;
+}
+
+.Button-Container{
+    width: fit-content;
+    font-size: .95rem;
+    padding: .5rem 1.5rem;
+    border: 1px solid #1d1d1f;
+    border-radius: 2rem;
+}
+
+#Home-Desktop-Experience-Concept-Image-Container{
+    width: 100%;
+    margin: 0 auto;
+    height: 500px;
+}
+
+#Home-Desktop-Experience-Concept-Image{
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 2px 0 #d3d3d3;
+    border-radius: .5rem;
+    object-fit: cover;
+    object-position: 50% 0;
+}
