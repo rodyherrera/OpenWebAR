@@ -8,7 +8,8 @@ const RoundedBox = ({
     opacity = '.8',
     radius = '.15',
     rotation = '0 0 0',
-    depth='0'
+    depth='0',
+    ...props
 }) => {
 
     return (
@@ -20,7 +21,8 @@ const RoundedBox = ({
             radius={radius}
             position={position}
             rotation={rotation}
-            depth={depth} />
+            depth={depth}
+            {...props} />
     );
 };
 

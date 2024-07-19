@@ -6,7 +6,8 @@ const Text = ({
     rotation,
     width = '2',
     color = '#333333',
-    align = undefined
+    align = undefined,
+    ...props
 }) => {
 
     return (
@@ -16,7 +17,8 @@ const Text = ({
             color={color} 
             width={width} 
             value={value} 
-            position={position} />
+            position={position} 
+            {...props} />
     );
 };
 

@@ -6,7 +6,8 @@ const RoundedImage = ({
     radius = '0.1',
     width = '0.5',
     height = '0.5',
-    rotation = '0 0 0'
+    rotation = '0 0 0',
+    ...props
 }) => {
 
     return (
@@ -16,7 +17,8 @@ const RoundedImage = ({
             width={width}
             height={height}
             position={position}
-            rotation={rotation} />
+            rotation={rotation}
+            {...props} />
     );
 };
 

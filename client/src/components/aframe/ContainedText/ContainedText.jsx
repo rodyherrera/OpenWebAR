@@ -15,7 +15,9 @@ const ContainedText = ({
     backgroundColor = '#FFFFFF',
     opacity = '.8',
     radius = '.15',
-    color = '#333333'
+    color = '#333333',
+    containerProps,
+    textProps
 }) => {
     return (
         <React.Fragment>
@@ -27,14 +29,16 @@ const ContainedText = ({
                 depth={depth}
                 radius={radius}
                 position={position} 
-                rotation={rotation} />
+                rotation={rotation}
+                {...containerProps} />
             <Text 
                 color={color}
                 position={fontPosition}
                 width={width}
                 align={align}
                 value={value}
-                rotation={rotation} />
+                rotation={rotation}
+                {...textProps} />
         </React.Fragment>
     );
 };
