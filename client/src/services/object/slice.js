@@ -11,13 +11,13 @@ const objectSlice = createSlice({
     name: 'object',
     initialState: state,
     reducers: {
-        setIsLoading: (state, action) => {
+        setIsLoading(state, action){
             state.isLoading = action.payload;
         },
-        setObjects: (state, action) => {
+        setObjects(state, action){
             state.objects = action.payload;
         },
-        setError: (state, action) => {
+        setError(state, action){
             state.error = action.payload;
         },
         setObject(state, action){
