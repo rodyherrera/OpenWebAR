@@ -4,7 +4,8 @@ import Text from '@components/aframe/Text';
 
 const ContainedText = ({
     width,
-    height,
+    containerWidth,
+    containerHeight,
     fontPosition,
     position,
     align,
@@ -19,8 +20,8 @@ const ContainedText = ({
     return (
         <React.Fragment>
             <RoundedBox
-                width={width}
-                height={height}
+                width={containerWidth}
+                height={containerHeight}
                 color={backgroundColor}
                 opacity={opacity}
                 depth={depth}

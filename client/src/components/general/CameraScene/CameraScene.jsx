@@ -2,8 +2,8 @@ import React from 'react';
 import '@components/aframe/roundedBox';
 import '@components/aframe/roundedImage';
 import '@components/aframe/roundedVideo';
-import '@utilities/gestures';
-import '@utilities/draggable';
+import '@components/aframe/gestures';
+import '@components/aframe/draggable';
 import CameraARSceneContent from '@components/general/CameraARSceneContent';
 
 const CameraScene = () => (
@@ -17,6 +17,8 @@ const CameraScene = () => (
         gesture-detector
         raycaster='objects: [data-clickable]'
     >
+        <a-light type="ambient" color="#ffffff" intensity="1" />
+        <a-light type="directional" color="#ffffff" intensity="2" position="1 1 1" />
         <a-camera
             wasd-controls='enabled: false'
             gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723' />
