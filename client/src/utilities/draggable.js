@@ -10,9 +10,7 @@ AFRAME.registerComponent('draggable', {
 
     touchMoveHandler(e){
         if(!this.el.sceneEl.getAttribute('is-dragging')) return;
-        const touch = e.touches[0];
-        this.touch.x = (touch.clientX / this.el.sceneEl.canvas.offsetWidth) * 2 - 1;
-        this.touch.y = - (touch.clientY / this.el.sceneEl.canvas.offsetHeight) * 2 + 1;
+        this.updateTouchPosition(e.touches[0]);
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(this.touch, this.el.sceneEl.camera);
         const distance = this.el.object3D.position.distanceTo(this.el.sceneEl.camera.position);
@@ -21,22 +19,24 @@ AFRAME.registerComponent('draggable', {
     },
 
     touchStartHandler(e){
-        const touch = e.touches[0];
-        this.touch.x = (touch.clientX / this.el.sceneEl.canvas.offsetWidth) * 2 - 1;
-        this.touch.y = - (touch.clientY / this.el.sceneEl.canvas.offsetHeight) * 2 + 1;
+        this.updateTouchPosition(e.touches[0]);
         const raycaster = new THREE.Raycaster();
         raycaster.setFromCamera(this.touch, this.el.sceneEl.camera);
         const intersected = raycaster.intersectObject(this.el.object3D, true);
-        if(intersected.length){
-            const currentTime = Date.now();
-            if(currentTime - this.lastTouchTime <= this.doubleTapThreshold){
-                this.el.sceneEl.setAttribute('is-dragging');
-            }
-            this.lastTouchTime = currentTime;
-        }        
+        if(!intersected.length) return;
+        const currentTime = Date.now();
+        if(currentTime - this.lastTouchTime <= this.doubleTapThreshold){
+            this.el.sceneEl.setAttribute('is-dragging', true);
+        }
+        this.lastTouchTime = currentTime;
     },
 
     touchEndHandler(){
         this.el.sceneEl.removeAttribute('is-dragging');
+    },
+
+    updateTouchPosition(touch){
+        this.touch.x = (touch.clientX / this.el.sceneEl.canvas.offsetWidth) * 2 - 1;
+        this.touch.y = -(touch.clientY / this.el.sceneEl.canvas.offsetHeight) * 2 + 1;
     }
 });
