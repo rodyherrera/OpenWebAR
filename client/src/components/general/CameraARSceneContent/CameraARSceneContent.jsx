@@ -34,6 +34,11 @@ const ARSceneContent = () => (
 
         <RoundedBox width='1.7' opacity='0.3' height='2' position='1.13 0 0.03' />
         <RoundedImage src='/assets/native-apps/hello-world/earth.png' width='2' height='1.8' position='1.2 0 0.06' />
+
+        <a-entity position='0 -1.2 0'>
+            <a-circle radius='0.085' color='#FFFFFF' opacity='0.3' position='-0.65 0 0' />
+            <RoundedBox width='1' opacity='0.3' height='0.15' position='0 0 0' />
+        </a-entity>
     </a-entity>
 );
 

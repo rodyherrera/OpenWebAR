@@ -33,7 +33,7 @@ const Camera = () => {
                 buttonContainerProps={{ ref: requestDeviceMotionPermission }}
             />
             <CameraHeader />
-            {/*<CameraScene />*/}
+            <CameraScene />
             <CameraFooter takeFrameAndSend={takeFrameAndSend} />
         </div>
     );
