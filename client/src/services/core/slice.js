@@ -13,14 +13,14 @@ const coreSlice = createSlice({
         setGesture(state, action){
             state.gesture = action.payload;
         },
-        setError: (state, action) => {
+        setError(state, action){
             state.error = action.payload;
         },
-        addError: (state, action) => {
+        addError(state, action){
             const error = action.payload;
             state.errors.push(error);
         },
-        removeError: (state, action) => {
+        removeError(state, action){
             const errorId = action.payload;
             state.errors = state.errors.filter((error) => error.id !== errorId);
         }
