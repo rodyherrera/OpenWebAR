@@ -30,7 +30,8 @@ const coreSlice = createSlice({
 export const {
     setError,
     addError,
-    removeError
+    removeError,
+    setGesture
 } = coreSlice.actions;
 
 export default coreSlice.reducer;
