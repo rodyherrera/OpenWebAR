@@ -50,11 +50,11 @@ const ARSceneContent = () => (
 
         <ContainedText
             containerWidth='1'
-            containerHeight='0.1'
+            containerHeight='0.15'
             align='center'
-            width='1.5'
-            fontPosition='-1.3 -0.7 0.04'
-            position='-1.3 -0.7 0.02'
+            width='1.6'
+            fontPosition='-1.3 -0.7 0.08'
+            position='-1.3 -0.7 0.04'
             value='View globe' />
 
         <RoundedBox 
