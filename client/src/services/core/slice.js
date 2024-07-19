@@ -2,13 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const state = {
     errors: [],
-    error: null
+    error: null,
+    gesture: ''
 };
 
 const coreSlice = createSlice({
     name: 'core',
     initialState: state,
     reducers: {
+        setGesture(state, action){
+            state.gesture = action.payload;
+        },
         setError: (state, action) => {
             state.error = action.payload;
         },

@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setGesture } from '@services/core/slice';
 import { io } from 'socket.io-client';
 
 const useHandposeModel = () => {
+    const dispatch = useDispatch();
     const [socket, setSocket] = useState(null);
     const [isConnected, setIsConnected] = useState(false);
-    const [gesture, setGesture] = useState({});
     const videoRef = useRef(null);
     const isProcessing = useRef(false);
     const canvasRef = useRef(null);
@@ -27,8 +29,8 @@ const useHandposeModel = () => {
             console.log('@hooks/useHandposeModel: ws disconnected.');
         });
 
-        wSocket.on('gesture', (data) => {
-            setGesture(data);
+        wSocket.on('gesture', (gesture) => {
+            dispatch(setGesture(gesture));
             isProcessing.current = false;
         });
         setSocket(wSocket);
