@@ -17,6 +17,7 @@ const ARSceneContent = () => (
         <a-entity
             position='-3 0 0'
             class='clickable'
+            draggable
             gltf-model='/hamburger_photorealistic.glb'
             gesture-handler="minScale: 0.25; maxScale: 10"
             scale='1 1 1'
@@ -48,7 +49,7 @@ const ARSceneContent = () => (
             value='Agregar al carrito'
         />
 
-        <RoundedVideo
+        {/*<RoundedVideo
             src='/jv-add.mp4'
             autoplay='false'
             width='1.8'
@@ -56,7 +57,7 @@ const ARSceneContent = () => (
             radius='.05'
             loop='true'
             rotation='-20 0 0'
-            position='0 -1.45 1' />
+            position='0 -1.45 1' /> */}
 
         <RoundedImage 
             rotation='-20 0 0'

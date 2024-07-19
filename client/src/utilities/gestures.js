@@ -64,6 +64,9 @@ AFRAME.registerComponent('gesture-detector', {
     },
 
     emitGestureEvent(e){
+        if(this.el.sceneEl.getAttribute('is-dragging')){
+            return;
+        }
         const currentState = this.getTouchState(e);
         const previousState = this.internalState.previousState;
         const gestureContinues = previousState && currentState && currentState.touchCount == previousState.touchCount;

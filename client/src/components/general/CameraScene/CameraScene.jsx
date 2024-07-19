@@ -3,6 +3,7 @@ import '@components/aframe/roundedBox';
 import '@components/aframe/roundedImage';
 import '@components/aframe/roundedVideo';
 import '@utilities/gestures';
+import '@utilities/draggable';
 import CameraARSceneContent from '@components/general/CameraARSceneContent';
 
 const CameraScene = () => (
@@ -16,7 +17,9 @@ const CameraScene = () => (
         gesture-detector
         raycaster='objects: [data-clickable]'
     >
-        <a-camera gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723' />
+        <a-camera
+            wasd-controls='enabled: false'
+            gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723' />
         <CameraARSceneContent />
     </a-scene>
 );
