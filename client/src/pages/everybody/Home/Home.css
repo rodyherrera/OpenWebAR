@@ -25,14 +25,6 @@
     max-width: 90%;
 }
 
-.Button-Container{
-    width: fit-content;
-    font-size: .95rem;
-    padding: .5rem 1.5rem;
-    border: 1px solid #1d1d1f;
-    border-radius: 2rem;
-}
-
 #Home-Desktop-Experience-Concept-Image-Container{
     width: 100%;
     margin: 0 auto;
