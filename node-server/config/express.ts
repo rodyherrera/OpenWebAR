@@ -5,6 +5,7 @@ import http from 'http';
 import compression from 'compression';
 import { Server } from 'socket.io';
 
+import globalErrorHandler from '@controllers/globalErrorHandler';
 import { configureApp } from '@utilities/bootstrap';
 
 const app = express();
@@ -23,5 +24,7 @@ configureApp({
         bodyParser.urlencoded({ extended: true })
     ]
 });
+
+app.use(globalErrorHandler);
 
 export { httpServer, io, app };
