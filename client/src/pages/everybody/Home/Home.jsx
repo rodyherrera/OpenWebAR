@@ -1,14 +1,12 @@
 import React from 'react';
 import Camera from '@components/general/Camera';
 import Button from '@components/general/Button';
-import useWindowSize from '@hooks/useWindowSize';
+import detectDeviceType, { DEVICE_TYPE } from '@utilities/detectDeviceType';
 import brandVrConcept from '@images/brand/vr-concept.png';
 import './Home.css';
 
 const Home = () => {
-    const { width } = useWindowSize();
-
-    if(width <= 768){
+    if(detectDeviceType() !== DEVICE_TYPE.DESKTOP){
         return <Camera />
     }
 
