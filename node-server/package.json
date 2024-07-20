@@ -5,7 +5,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "npx tsx server.ts"
+    "start": "TF_CPP_MIN_LOG_LEVEL=2 npx tsx server.ts"
   },
   "dependencies": {
     "@tensorflow-models/handpose": "^0.1.0",

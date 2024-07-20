@@ -53,6 +53,7 @@ export const loadModel = async (): Promise<void> => {
         iouThreshold: 0.3,
         scoreThreshold: 0.73
     });
+    console.log('@serviecs/handpose.ts: model loaded sucessfully.');
 };
 
 export const getPredictions = async (tensor: tf.Tensor3D): Promise<string[] | null> => {
