@@ -45,7 +45,7 @@ const UserSchema = new mongoose.Schema<IUser>({
         type: String,
         required: [true, 'User::Password::Required'],
         minlength: [8, 'User::Password::MinLength'],
-        maxlength: [16, 'User::Password::MaxLength'],
+        maxlength: [32, 'User::Password::MaxLength'],
         select: false
     },
     passwordConfirm: {

@@ -18,3 +18,9 @@
 .Input-Container:hover{
     border: 1px solid #0071e3;
 }
+
+@media screen and (max-width: 768px){
+    .Input-Container{
+        height: 45px;
+    }
+}

@@ -46,3 +46,9 @@
     background-color: #1d1d1f;
     color: #FFFFFF;
 }
+
+@media screen and (max-width: 768px){
+    .Button-Container.Contained{
+        border-radius: 5rem;
+    }
+}
