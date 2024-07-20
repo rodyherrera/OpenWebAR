@@ -5,13 +5,13 @@ import './FormFooter.css';
 
 const FormFooter = () => {
     return (
-        <article className='Form-Footer-Container'>
+        <div className='Form-Footer-Container'>
             <Button 
                 type='submit'
                 Icon={IoIosArrowRoundForward}
                 variant='Contained Submit-Button'
                 value='Continue' />
-        </article>
+        </div>
     );
 };
 

@@ -10,11 +10,13 @@ const SignIn = () => {
             description='One Vision ID is all you need to access all cloud services.'
             inputs={[
                 {
-                    placeholder: 'Email Address or Username'
+                    placeholder: 'Email Address or Username',
+                    name: 'usernameOrEmail'
                 },
                 {
                     placeholder: 'Password',
-                    type: 'password'
+                    type: 'password',
+                    name: 'password'
                 }
             ]}
             HeaderComplement={() => (

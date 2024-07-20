@@ -11,23 +11,28 @@ const SignIn = () => {
             inputs={[
                 {
                     placeholder: 'Your name',
-                    type: 'text'
+                    type: 'text',
+                    name: 'fullname'
                 },
                 {
                     placeholder: 'Username',
-                    type: 'text'
+                    type: 'text',
+                    name: 'username'
                 },
                 {
                     placeholder: 'Email address',
-                    type: 'email'
+                    type: 'email',
+                    name: 'email'
                 },
                 {
                     placeholder: 'Password',
-                    type: 'password'
+                    type: 'password',
+                    name: 'password'
                 },
                 {
                     placeholder: 'Confirm password',
-                    type: 'password'
+                    type: 'password',
+                    name: 'passwordConfirm'
                 }
             ]}
             HeaderComplement={() => (
