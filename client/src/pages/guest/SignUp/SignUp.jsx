@@ -14,6 +14,10 @@ const SignIn = () => {
                     type: 'text'
                 },
                 {
+                    placeholder: 'Username',
+                    type: 'text'
+                },
+                {
                     placeholder: 'Email address',
                     type: 'email'
                 },
