@@ -4,7 +4,10 @@ interface IEntity extends Document{
     name: string;
     description: string;
     samples: string[],
-    user: ObjectId
+    user: ObjectId,
+    type: String,
+    private: Boolean,
+    interactions: Number
 };
 
 const EntitySchema = new mongoose.Schema<IEntity>({
@@ -15,6 +18,21 @@ const EntitySchema = new mongoose.Schema<IEntity>({
         required: [true, 'Entity::Name::Required'],
         lowercase: true,
         trim: true
+    },
+    interactions: {
+        type: Number,
+        min: 0,
+        default: 0
+    },
+    private: {
+        type: Boolean,
+        default: false
+    },
+    type: {
+        type: String,
+        lowercase: true,
+        default: 'location-based',
+        enum: ['image-tracking', 'location-based', 'marker-tracking']
     },
     description: {
         type: String,
