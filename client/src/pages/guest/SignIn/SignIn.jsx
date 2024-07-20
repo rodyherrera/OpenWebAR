@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { signIn } from '@services/authentication/operations';
+import { IoIosArrowForward, IoIosArrowRoundForward } from 'react-icons/io';
+import Button from '@components/general/Button';
+import './Sign-In.css';
 
 const SignIn = () => {
     const dispatch = useDispatch();
@@ -20,13 +23,43 @@ const SignIn = () => {
     };
 
     return (
-        <main id='Sign-In-Main'>
-            <form onSubmit={submitHandler}>
-                <input type='text' placeholder='Username' value={username} onChange={(e) => setUsername(e.target.value)} />
-                <input type='password' placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type='submit'>Sign In</button>
-            </form>
-        </main>
+        <form className='Form-Container'>
+            <article className='Form-Header-Container'>
+                <h3 className='Form-Header-Title'>Sign in with your Vision ID</h3>
+                <p className='Form-Header-Description'>One Vision ID is all you need to access all cloud services.</p>
+                <div className='Form-Header-Description-Complement-Container'>
+                    <p className='Form-Header-Description'>Don't have a Vision ID?</p>
+                    <div className='Link-Container'>
+                        <a className='Link'>Create one</a>
+                        <i className='Link-Icon-Container'>
+                            <IoIosArrowForward />
+                        </i>
+                    </div>
+                </div>
+            </article>
+
+            <article className='Form-Body-Container'>
+                <div className='Input-Container'>
+                    <input 
+                        placeholder='Email Address or Username'
+                        className='Input' />
+                </div>
+
+                <div className='Input-Container'>
+                    <input 
+                        placeholder='Password'
+                        className='Input' />
+                </div>
+            </article>
+
+            <article className='Form-Footer-Container'>
+                <Button 
+                    type='submit'
+                    Icon={IoIosArrowRoundForward}
+                    variant='Contained Submit-Button'
+                    value='Continue' />
+            </article>
+        </form>
     );
 };
 

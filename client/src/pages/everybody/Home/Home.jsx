@@ -15,7 +15,7 @@ const Home = () => {
             <section id='Home-Desktop-Experience-Header-Container'>
                 <h3 id='Home-Desktop-Experience-Title'>Sorry, you can only access the AR session on mobile devices.</h3>
                 <p id='Home-Desktop-Experience-Description'>Our entire WebAR ecosystem is optimized to work on mobile devices, you can access your dashboard and explore or create new entities.</p>
-                <Button value='Go to dashboard' />
+                <Button value='Go to dashboard' variant='Rounded' />
             </section>
 
             <figure id='Home-Desktop-Experience-Concept-Image-Container'>

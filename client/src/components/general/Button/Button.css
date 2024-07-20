@@ -3,5 +3,30 @@
     font-size: .95rem;
     padding: .5rem 1.5rem;
     border: 1px solid #1d1d1f;
+    border-radius: .5rem;
+    cursor: pointer;
+    gap: .5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Button-Icon-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.Button-Container.Rounded{
     border-radius: 2rem;
+}
+
+.Button-Container:hover{
+    opacity: 8;
+}
+
+.Button-Container.Contained{
+    background-color: #1d1d1f;
+    color: #FFFFFF;
 }
