@@ -1,8 +1,11 @@
 {
-  "name": "backend-server",
+  "name": "vision-cloud-service",
   "version": "1.0.0",
   "type": "module",
-  "description": "",
+  "repository": {
+    "url": "https://github.com/rodyherrera/vision/",
+    "type": "git"
+  },
   "main": "server.ts",
   "scripts": {
     "start": "TF_CPP_MIN_LOG_LEVEL=2 npx tsx server.ts"

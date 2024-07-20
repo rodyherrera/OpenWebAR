@@ -1,7 +1,10 @@
 {
-  "name": "client",
-  "private": true,
+  "name": "vision-frontend",
   "version": "0.0.0",
+  "repository": {
+    "url": "https://github.com/rodyherrera/vision/",
+    "type": "git"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
