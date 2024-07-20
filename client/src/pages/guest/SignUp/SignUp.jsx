@@ -4,10 +4,17 @@ import Link from '@components/general/Link';
 import { IoIosArrowForward } from 'react-icons/io';
 
 const SignIn = () => {
+    const { isLoading } = useSelector((state) => state.auth);
+
+    const onSubmit = (values) => {
+
+    };
+
     return (
         <Form 
             title='Create Your Vision ID'
             description='One Vision ID is all you need to access all cloud services.'
+            isLoading={isLoading}
             inputs={[
                 {
                     placeholder: 'Your name',

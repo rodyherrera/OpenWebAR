@@ -5,7 +5,7 @@ import FormFooter from '@components/form/FormFooter';
 import { useFormik } from 'formik';
 import './Form.css';
 
-const Form = ({ title, description, HeaderComplement, inputs }) => {
+const Form = ({ title, description, HeaderComplement, inputs, isLoading, onSubmit }) => {
     // initialValues from inputs[n].name
     const initialValues = inputs.reduce((acc, input) => {
         acc[input.name] = '';
@@ -14,16 +14,14 @@ const Form = ({ title, description, HeaderComplement, inputs }) => {
 
     const formik = useFormik({
         initialValues,
-        onSubmit: (values) => {
-            console.log(values);
-        }
+        onSubmit
     });
 
     return (
         <form className='Form-Container' onSubmit={formik.handleSubmit}>
             <FormHeader title={title} description={description} HeaderComplement={HeaderComplement} />
             <FormBody inputs={inputs} formik={formik} />
-            <FormFooter />
+            <FormFooter isLoading={isLoading} />
         </form>
     );
 };

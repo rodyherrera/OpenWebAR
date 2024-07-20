@@ -8,8 +8,18 @@
     gap: .5rem;
     display: flex;
     justify-content: center;
-    transition: .2s;
+    transition: .5s;
     align-items: center;
+}
+
+.Button-Container[data-isloading='true'] .Button-Value,
+.Button-Container[data-isloading='true'] .Button-Icon-Container{
+    display: none;
+}
+
+.Button-Container[data-isloading='true'].Contained{
+    background-color: transparent;
+    border: unset;
 }
 
 .Button-Icon-Container{

@@ -2,12 +2,21 @@ import React from 'react';
 import Form from '@components/form/Form';
 import Link from '@components/general/Link';
 import { IoIosArrowForward } from 'react-icons/io';
+import { useSelector } from 'react-redux';
 
 const SignIn = () => {
+    const { isLoading } = useSelector((state) => state.auth);
+
+    const onSubmit = (values) => {
+
+    };
+
     return (
         <Form 
             title='Sign in with your Vision ID'
             description='One Vision ID is all you need to access all cloud services.'
+            isLoading={isLoading}
+            onSubmit={onSubmit}
             inputs={[
                 {
                     placeholder: 'Email Address or Username',
