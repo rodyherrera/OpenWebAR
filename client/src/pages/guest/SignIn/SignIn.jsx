@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from '@components/form/Form';
+import Link from '@components/general/Link';
 import { IoIosArrowForward } from 'react-icons/io';
 import './Sign-In.css';
 
@@ -20,12 +21,7 @@ const SignIn = () => {
             HeaderComplement={() => (
                 <div className='Form-Header-Description-Complement-Container'>
                     <p className='Form-Header-Description'>Don't have a Vision ID?</p>
-                    <div className='Link-Container'>
-                        <a className='Link'>Create one</a>
-                        <i className='Link-Icon-Container'>
-                            <IoIosArrowForward />
-                        </i>
-                    </div>
+                    <Link title='Create One' to='/' Icon={IoIosArrowForward} />
                 </div>
             )}
         />

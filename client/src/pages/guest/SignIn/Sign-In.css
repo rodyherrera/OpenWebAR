@@ -1,27 +1,3 @@
-.Link-Container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #0070c9;
-    gap: .3rem;
-    cursor: pointer;
-}
-
-.Link-Container:hover{
-    text-decoration: underline;
-}
-
-.Link{
-    font-size: .8rem;
-}
-
-.Link-Icon-Container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .75rem;
-}
-
 .Input{
     font-size: .75rem;
     width: 100%;
