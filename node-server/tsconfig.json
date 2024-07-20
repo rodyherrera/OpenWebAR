@@ -12,6 +12,8 @@
             "@utilities/*": ["./utilities/*"],
             "@models/*": ["./models/*"],
             "@config/*": ["./config/*"],
+            "@middlewares/*": ["./middlewares/*"],
+            "@routes/*": ["./routes/*"],
             "@controllers/*": ["./controllers/*"],
             "@services/*": ["./services/*"]
         }

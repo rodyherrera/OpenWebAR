@@ -16,6 +16,7 @@ configureApp({
     app,
     suffix: '/api/v1/',
     routes: [
+        'auth'
     ],
     middlewares: [
         helmet(),
