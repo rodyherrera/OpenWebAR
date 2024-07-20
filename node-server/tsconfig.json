@@ -10,6 +10,7 @@
         "outDir": "./dist",
         "paths": {
             "@utilities/*": ["./utilities/*"],
+            "@models/*": ["./models/*"],
             "@config/*": ["./config/*"],
             "@controllers/*": ["./controllers/*"],
             "@services/*": ["./services/*"]
