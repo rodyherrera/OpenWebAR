@@ -1,7 +1,7 @@
 import React from 'react';
 import ARPoweredHumans from '@images/dashboard/ar-powered-humans.png';
 import DashboardHeaderNavigation from '@components/dashboard/DashboardHeaderNavigation';
-import { HiArrowUpRight } from 'react-icons/hi2';
+import BrandNews from '@components/general/BrandNews';
 import './DashboardHeader.css';
 
 const DashboardHeader = () => {
@@ -17,18 +17,7 @@ const DashboardHeader = () => {
                 <DashboardHeaderNavigation />
             </div>
             <div className='Dashboard-Header-Right-Container'>
-                <figure className='Brand-News-Container'>
-                    <img 
-                        className='Brand-News-Image'
-                        src={ARPoweredHumans} 
-                        alt='Augmented Reality Powered Humans' />
-                    <figcaption className='Brand-News-Caption-Container'>
-                        <h3 className='Brand-News-Caption-Title'>Start Creating Now</h3>
-                        <i className='Brand-News-Caption-Icon-Container'>
-                            <HiArrowUpRight />
-                        </i>
-                    </figcaption>
-                </figure>
+                <BrandNews title='Start Creating Now' backgroundImage={ARPoweredHumans} />
             </div>
         </article>
     );
