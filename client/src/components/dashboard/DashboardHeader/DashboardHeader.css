@@ -1,0 +1,118 @@
+
+.Dashboard-Header-Title{
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.Dashboard-Header-Title-Container{
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+}
+
+.Dashboard-Header-Subtitle{
+    font-size: .95rem;
+}
+
+.Dashboard-Header-Navigation-Container{
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+}
+
+.Dashboard-Header-Navigation-Item-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+    cursor: pointer;
+}
+
+.Dashboard-Header-Navigation-Item-Container:hover .Dashboard-Header-Navigation-Item-Title{
+    color: #121212;
+}
+
+.Dashboard-Header-Navigation-Item-Container:active{
+    transform: scale(.95);
+}
+
+.Dashboard-Header-Navigation-Item-Title{
+    font-size: .75rem;
+    color: #666666;
+}
+
+.Dashboard-Header-Left-Container{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.Dashboard-Header-Navigation-Item-Container[data-isactive='true'] .Dashboard-Header-Navigation-Item-Title{
+    color: #121212;
+    text-decoration: underline;
+    text-underline-offset: .8rem;
+}
+
+.Dashboard-Header-Container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Brand-News-Container{
+    width: 350px;
+    height: 150px;
+    box-shadow: -2px 7px 6px 0 #d1d1d1;
+    position: relative;
+    cursor: pointer;
+}
+
+.Brand-News-Image{
+    width: 100%;
+    object-fit: cover;
+    transition: 1s;
+    border-radius: .5rem;
+    height: 100%;
+    object-position: 0% 0%;
+    filter: grayscale(100%); 
+}
+
+.Brand-News-Container:hover .Brand-News-Image{
+    filter: grayscale(0);
+}
+
+.Brand-News-Container:hover .Brand-News-Caption-Container{
+    backdrop-filter: blur(1px);
+}
+
+.Brand-News-Caption-Container{
+    position: absolute;
+    bottom: 0;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 100;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Brand-News-Caption-Title,
+.Brand-News-Caption-Icon-Container{
+    color: #FFFFFF;
+}
+
+.Brand-News-Caption-Title{
+    transition: .5s;
+    font-size: 1.1rem;
+    text-decoration: underline;
+    text-underline-offset: .5rem;
+}
+
+.Brand-News-Caption-Icon-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
