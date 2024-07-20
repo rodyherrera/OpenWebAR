@@ -3,13 +3,17 @@ import { createSlice } from '@reduxjs/toolkit';
 const state = {
     errors: [],
     error: null,
-    gesture: ''
+    gesture: '',
+    selectedDashboardTab: 0
 };
 
 const coreSlice = createSlice({
     name: 'core',
     initialState: state,
     reducers: {
+        setSelectedDashboardTab(state, action){
+            state.selectedDashboardTab = action.payload;
+        },
         setGesture(state, action){
             state.gesture = action.payload;
         },
@@ -31,6 +35,7 @@ export const {
     setError,
     addError,
     removeError,
+    setSelectedDashboardTab,
     setGesture
 } = coreSlice.actions;
 
