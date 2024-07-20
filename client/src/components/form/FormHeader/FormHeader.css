@@ -1,0 +1,18 @@
+.Form-Header-Container{
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: .3rem;
+}
+
+.Form-Header-Description{
+    font-size: .8rem;
+}
+
+.Form-Header-Description-Complement-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
