@@ -23,3 +23,9 @@ body{
     background-color: #FFFFFF;
     color: #1d1d1f;
 }
+
+@media screen and (max-width: 768px){
+    main{
+        padding: 1rem !important;
+    }
+}

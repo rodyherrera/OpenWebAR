@@ -55,3 +55,9 @@
     justify-content: center;
     font-size: 1.3rem;
 }
+
+@media screen and (max-width: 768px){
+    .Brand-News-Container{
+        width: 100%;
+    }
+}

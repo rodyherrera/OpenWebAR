@@ -30,3 +30,15 @@
     text-decoration: underline;
     text-underline-offset: .8rem;
 }
+
+@media screen and (max-width: 768px){
+    .Dashboard-Header-Navigation-Item-Container{
+        min-width: fit-content;
+    }
+
+    .Dashboard-Header-Navigation-Container{
+        overflow-x: scroll;
+        width: 100%;
+        padding-bottom: .5rem;
+    }
+}
