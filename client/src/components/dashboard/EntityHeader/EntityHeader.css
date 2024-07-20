@@ -1,0 +1,47 @@
+.Entity-Header-Left-Container{
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+}
+
+.Entity-Header-Top-Container{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Entity-Header-Description{
+    font-size: .8rem;
+    line-height: 1.3rem;
+}
+
+.Entity-Header-Container{
+    padding: .8rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.Entity-Header-Arrow-Container{
+    display: flex;
+    font-size: .8rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.Entity-Header-Name{
+    font-size: .85rem;
+    font-weight: 400;
+}
+
+.Entity-Header-Type-Icon-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.Entity-Container:hover .Entity-Header-Arrow-Icon-Container{
+    color: #0070c9;
+}

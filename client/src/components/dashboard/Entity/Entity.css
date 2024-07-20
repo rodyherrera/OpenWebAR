@@ -1,0 +1,14 @@
+.Entity-Container{
+    display: flex;
+    flex-direction: column;
+    border-radius: .25rem;
+    border: 1px solid #cacaca;
+    width: 350px;
+    cursor: pointer;
+}
+
+
+.Entity-Container:hover{
+    border: 1px solid #0070c9;
+}
+
