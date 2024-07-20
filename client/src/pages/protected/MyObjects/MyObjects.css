@@ -1,9 +1,0 @@
-.Object-Samples-Container{
-    display: flex;
-    gap: 1rem;
-}
-
-.Object-Sample{
-    width: 150px;
-    border-radius: .25rem;
-}

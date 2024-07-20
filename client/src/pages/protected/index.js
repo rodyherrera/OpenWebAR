@@ -1,9 +1,7 @@
-import CreateObject from './CreateObject';
-import MyObjects from './MyObjects';
+import Dashboard from './Dashboard';
 
 const pages = {
-    CreateObject,
-    MyObjects
+    Dashboard
 };
 
 export default pages;

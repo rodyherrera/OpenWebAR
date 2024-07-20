@@ -20,8 +20,7 @@ const Application = () => {
                     <Route path='/auth/sign-in/' element={<pages.guest.SignIn />} />
                 </Route>
                 <Route element={<ProtectedRoute mode='protect' />}>
-                    <Route path='/object/create/' element={<pages.protected.CreateObject />} />
-                    <Route path='/object/me/' element={<pages.protected.MyObjects />} />
+                    <Route path='/dashboard/' element={<pages.protected.Dashboard />} />
                 </Route>
             </Route>
         </Routes>

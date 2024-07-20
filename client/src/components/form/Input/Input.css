@@ -2,10 +2,12 @@
     font-size: .75rem;
     width: 100%;
     padding: 0 .7rem;
+    height: 100%;
 }
 
 .Input-Container{
     width: 350px;
+    padding: 2px;
     display: flex;
     align-items: center;
     height: 35px;
