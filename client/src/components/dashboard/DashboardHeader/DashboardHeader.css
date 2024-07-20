@@ -14,43 +14,10 @@
     font-size: .95rem;
 }
 
-.Dashboard-Header-Navigation-Container{
-    display: flex;
-    gap: 3rem;
-    align-items: center;
-}
-
-.Dashboard-Header-Navigation-Item-Container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: .2s;
-    cursor: pointer;
-}
-
-.Dashboard-Header-Navigation-Item-Container:hover .Dashboard-Header-Navigation-Item-Title{
-    color: #121212;
-}
-
-.Dashboard-Header-Navigation-Item-Container:active{
-    transform: scale(.95);
-}
-
-.Dashboard-Header-Navigation-Item-Title{
-    font-size: .75rem;
-    color: #666666;
-}
-
 .Dashboard-Header-Left-Container{
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.Dashboard-Header-Navigation-Item-Container[data-isactive='true'] .Dashboard-Header-Navigation-Item-Title{
-    color: #121212;
-    text-decoration: underline;
-    text-underline-offset: .8rem;
 }
 
 .Dashboard-Header-Container{

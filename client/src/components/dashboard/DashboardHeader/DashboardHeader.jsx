@@ -1,5 +1,6 @@
 import React from 'react';
 import ARPoweredHumans from '@images/dashboard/ar-powered-humans.png';
+import DashboardHeaderNavigation from '@components/dashboard/DashboardHeaderNavigation';
 import { HiArrowUpRight } from 'react-icons/hi2';
 import './DashboardHeader.css';
 
@@ -13,19 +14,7 @@ const DashboardHeader = () => {
                     <h3 className='Dashboard-Header-Title'>What can we do for you today?</h3>
                 </div>
 
-                <article className='Dashboard-Header-Navigation-Container'>
-                    {[
-                        ['Vision Entities', true],
-                        ['My Account'],
-                        ['Settings'],
-                        ['Analytics'],
-                        ['Community']
-                    ].map(([ item, isActive ]) => (
-                        <div className='Dashboard-Header-Navigation-Item-Container' data-isactive={isActive}>
-                            <p className='Dashboard-Header-Navigation-Item-Title'>{item}</p>
-                        </div>
-                    ))}
-                </article>
+                <DashboardHeaderNavigation />
             </div>
             <div className='Dashboard-Header-Right-Container'>
                 <figure className='Brand-News-Container'>
