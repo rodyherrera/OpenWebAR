@@ -2,12 +2,15 @@ import React from 'react';
 import Form from '@components/form/Form';
 import Link from '@components/general/Link';
 import { IoIosArrowForward } from 'react-icons/io';
+import { useSelector, useDispatch } from 'react-redux';
+import { signUp } from '@services/authentication/operations';
 
 const SignIn = () => {
     const { isLoading } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
     const onSubmit = (values) => {
-
+        dispatch(signUp(values));
     };
 
     return (
@@ -15,6 +18,7 @@ const SignIn = () => {
             title='Create Your Vision ID'
             description='One Vision ID is all you need to access all cloud services.'
             isLoading={isLoading}
+            onSubmit={onSubmit}
             inputs={[
                 {
                     placeholder: 'Your name',

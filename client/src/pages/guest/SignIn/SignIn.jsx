@@ -2,13 +2,15 @@ import React from 'react';
 import Form from '@components/form/Form';
 import Link from '@components/general/Link';
 import { IoIosArrowForward } from 'react-icons/io';
-import { useSelector } from 'react-redux';
+import { signIn } from '@services/authentication/operations';
+import { useSelector, useDispatch } from 'react-redux';
 
 const SignIn = () => {
     const { isLoading } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
 
     const onSubmit = (values) => {
-
+        dispatch(signIn(values));
     };
 
     return (
