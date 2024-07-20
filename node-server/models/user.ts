@@ -12,7 +12,6 @@ interface IUser extends Document{
     passwordChangedAt?: Date;
     passwordResetToken?: string;
     passwordResetExpires?: Date;
-    createdAt: Date;
     isCorrectPassword(candidatePassword: string, userPassword: string): Promise<boolean>;
     isPasswordChangedAfterJWFWasIssued(JWTTimeStamp: number): boolean;
 };
@@ -67,11 +66,9 @@ const UserSchema = new mongoose.Schema<IUser>({
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
-    passwordResetExpires: Date,
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    passwordResetExpires: Date
+}, {
+    timestamps: true
 });
 
 UserSchema.index({ username: 'text', fullname: 'text', email: 'text' });
