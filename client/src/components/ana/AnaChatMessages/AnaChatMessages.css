@@ -1,0 +1,71 @@
+.Ana-Messages-Container{
+    display: flex;
+    gap: .3rem;
+    height: 220px;
+    overflow-y: scroll;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.Ana-Message-Top-Assistant-Container{
+    display: flex;
+    width: 95%;
+    gap: .5rem;
+    align-items: flex-start;
+}
+
+.Ana-Message-Container{
+    border-radius: 2rem;
+    height: fit-content;
+    padding: .5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+}
+
+.Ana-Message-Container.user{
+    align-self: flex-end;
+    background-color: #e1e1e1;
+}
+
+.Ana-Message-Container.assistant{
+    width: 100%;
+    align-self: flex-start;
+}
+
+.Ana-Response-Options-Container{
+    width: 5%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    margin-top: 4.5px;
+}
+
+.Ana-Message-Icon-Container{
+    width: .5rem;
+    height: .5rem;
+    border: 1px solid #121212;
+    display: block;
+    border-radius: 50%;
+}
+
+.Ana-Message-Content{
+    font-size: .75rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.Ana-Response-Options-Bottom-Container{
+    display: flex;
+    height: 100%;
+    gap: .5rem;
+    padding-left: 1rem;
+}
+
+.Ana-Response-Option{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    opacity: .5;
+}

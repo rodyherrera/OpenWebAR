@@ -1,9 +1,8 @@
 import React from 'react';
 import { BsStars } from 'react-icons/bs';
-import { PiSpeakerHigh } from "react-icons/pi";
-import { SlLike, SlDislike } from "react-icons/sl";
 import useAna from '@hooks/useAna';
 import Loader from '@components/general/Loader';
+import AnaChatMessages from '@components/ana/AnaChatMessages';
 import AnaChatHeader from '@components/ana/AnaChatHeader';
 import AnaChatFooter from '@components/ana/AnaChatFooter';
 import './Ana.css';
@@ -35,56 +34,10 @@ const Ana = () => {
                         </div>
                     ) : (   
                         (messages.length >= 1) ? (
-                            <div className='Ana-Messages-Container' ref={messagesContainerRef}>
-                                {messages.map(({ content, role }, index) => (
-                                    <div key={index} className={`Ana-Message-Container ${role}`}>
-                                        {role === 'assistant' ? (
-                                            <React.Fragment>
-                                                <div className='Ana-Message-Top-Assistant-Container'>
-                                                    <div className='Ana-Response-Options-Container'>
-                                                        <i className='Ana-Message-Icon-Container' />
-                                                    </div>
-                                                    <p className='Ana-Message-Content'>{content}</p>
-                                                </div>
-                                                <div className='Ana-Response-Options-Bottom-Container'>
-                                                    <i className='Ana-Response-Option'>
-                                                        <PiSpeakerHigh />
-                                                    </i>
-                                                    <i className='Ana-Response-Option'>
-                                                        <SlLike />
-                                                    </i>
-                                                    <i className='Ana-Response-Option'>
-                                                        <SlDislike />
-                                                    </i>
-                                                </div>
-                                            </React.Fragment>
-                                        ) : (
-                                            <span className='Ana-Message-Content'>{content}</span>
-                                        )}
-                                    </div>
-                                ))}
-                                {currentAssistantMessage && (
-                                    <div className={`Ana-Message-Container assistant`}>
-                                        <div className='Ana-Message-Top-Assistant-Container'>
-                                            <div className='Ana-Response-Options-Container'>
-                                                <i className='Ana-Message-Icon-Container' />
-                                            </div>
-                                            <span className='Ana-Message-Content'>{currentAssistantMessage}</span>
-                                        </div>
-                                        <div className='Ana-Response-Options-Bottom-Container'>
-                                            <i className='Ana-Response-Option'>
-                                                <PiSpeakerHigh />
-                                            </i>
-                                            <i className='Ana-Response-Option'>
-                                                <SlLike />
-                                            </i>
-                                            <i className='Ana-Response-Option'>
-                                                <SlDislike />
-                                            </i>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
+                           <AnaChatMessages 
+                                messagesContainerRef={messagesContainerRef}
+                                messages={messages}
+                                currentAssistantMessage={currentAssistantMessage} />
                         ) : (
                             <div className='Ana-Empty-Chat-Container'>
                                 {['I would like you to tell me a joke', 'Tell me a curious fact, surprise me', 'Are you aware of reality, Ana?'].map((suggest, index) => (
