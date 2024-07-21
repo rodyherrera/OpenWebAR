@@ -33,14 +33,6 @@
     align-self: flex-start;
 }
 
-.Ana-Response-Options-Container{
-    width: 5%;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    margin-top: 4.5px;
-}
-
 .Ana-Message-Icon-Container{
     width: .5rem;
     height: .5rem;
@@ -53,19 +45,4 @@
     font-size: .75rem;
     word-break: break-word;
     overflow-wrap: break-word;
-}
-
-.Ana-Response-Options-Bottom-Container{
-    display: flex;
-    height: 100%;
-    gap: .5rem;
-    padding-left: 1rem;
-}
-
-.Ana-Response-Option{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: .75rem;
-    opacity: .5;
 }

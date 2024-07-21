@@ -1,6 +1,5 @@
 import React from 'react';
-import { PiSpeakerHigh } from 'react-icons/pi';
-import { SlLike, SlDislike } from 'react-icons/sl';
+import AnaResponseOptions from '@components/ana/AnaResponseOptions';
 import './AnaChatMessages.css';
 
 const AnaChatMessages = ({ messagesContainerRef, messages, currentAssistantMessage }) => {
@@ -17,17 +16,7 @@ const AnaChatMessages = ({ messagesContainerRef, messages, currentAssistantMessa
                                 </div>
                                 <p className='Ana-Message-Content'>{content}</p>
                             </div>
-                            <div className='Ana-Response-Options-Bottom-Container'>
-                                <i className='Ana-Response-Option'>
-                                    <PiSpeakerHigh />
-                                </i>
-                                <i className='Ana-Response-Option'>
-                                    <SlLike />
-                                </i>
-                                <i className='Ana-Response-Option'>
-                                    <SlDislike />
-                                </i>
-                            </div>
+                            <AnaResponseOptions />
                         </React.Fragment>
                     ) : (
                         <span className='Ana-Message-Content'>{content}</span>
@@ -42,17 +31,7 @@ const AnaChatMessages = ({ messagesContainerRef, messages, currentAssistantMessa
                         </div>
                         <span className='Ana-Message-Content'>{currentAssistantMessage}</span>
                     </div>
-                    <div className='Ana-Response-Options-Bottom-Container'>
-                        <i className='Ana-Response-Option'>
-                            <PiSpeakerHigh />
-                        </i>
-                        <i className='Ana-Response-Option'>
-                            <SlLike />
-                        </i>
-                        <i className='Ana-Response-Option'>
-                            <SlDislike />
-                        </i>
-                    </div>
+                    <AnaResponseOptions />
                 </div>
             )}
         </div>
