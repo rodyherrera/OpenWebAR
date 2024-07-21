@@ -14,19 +14,38 @@ const imageHandler = async (blob: string, socket: Socket) => {
     socket.emit('gesture', gesture);
 };
 
-const anaPromptHandler = async (prompt: string, socket: Socket) => {
-    // fix it, "ana" must be a customizable name
-    const ollama = new Ollama();
+const ollamaPromptHandler = async (prompt: string, socket: Socket) => {
+    // TODO: fix it, "ana" must be a customizable name,
+    // replace css 'Ana-*' with 'Ollama-*'
+    const ollama = new Ollama({ 
+        model: process.env.OLLAMA_CHAT_MODEL,
+        temperature: 0.7
+    });
     await ollama.streamResponse(prompt, (part: ChatResponse) => {
         socket.emit('ollama-stream-response', part);
     });
-    socket.emit('ollama-stream-response-end');
+};
+
+// REFACTOR THIS
+const ollamaGenerateTitleHandler = async (ctx: string, socket: Socket) => {
+    const ollama = new Ollama({ 
+        model: process.env.OLLAMA_SUMMARIZE_MODEL,
+        temperature: 0.7,
+        maxTokens: 10
+    });
+    const ctxObj = JSON.parse(ctx);
+    const parsedCtx = ctxObj.map(({ content, role }) => `(${role}: ${content})`).join(';');
+    const prompt = `Create a title for the conversation. The title MUST BE EXACTLY 4 WORDS. No more, no less. Context: ${parsedCtx}`;   
+    await ollama.streamResponse(prompt, (part: ChatResponse) => {
+        socket.emit('ollama-generate-title-stream-response', part);
+    });
 };
 
 const connectionHandler = (socket: Socket) => {
     console.log('@controllers/ws: client connected.');
     socket.on('image', (message: string) => imageHandler(message, socket));
-    socket.on('ollama-prompt', (prompt: string) => anaPromptHandler(prompt, socket));
+    socket.on('ollama-prompt', (prompt: string) => ollamaPromptHandler(prompt, socket));
+    socket.on('ollama-generate-title', (ctx: string) => ollamaGenerateTitleHandler(ctx, socket))
 };
 
 // todo: the default exported function is the 

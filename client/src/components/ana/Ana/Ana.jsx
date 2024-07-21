@@ -18,6 +18,7 @@ const Ana = () => {
     const [messages, setMessages] = useState([]);
     const [socket, setSocket] = useState(null);
     const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
+    const [chatTitle, setChatTitle] = useState('How can I help you today?')
     const messagesContainerRef = useRef(null);
 
     useEffect(() => {
@@ -43,11 +44,22 @@ const Ana = () => {
             setIsConnected(false);
         });
 
+        // REFACTOR THIS!!
+        let titleBuff = '';
+        wSocket.on('ollama-generate-title-stream-response', ({ message, done }) => {
+            titleBuff += message.content;
+            if(done){
+                setChatTitle(titleBuff.replaceAll('"', ''));
+                titleBuff = '';
+            }
+        });
+
         wSocket.on('ollama-stream-response', ({ message, done }) => {
             setCurrentAssistantMessage((prev) => {
                 const assistantMessage = prev + message.content;
                 if(done){
                     setMessages((prev) => [ ...prev, { role: 'assistant', content: assistantMessage } ]);
+                    wSocket.emit('ollama-generate-title', JSON.stringify(messages.slice(0, 2)));
                     setIsLoading(false);
                     return '';
                 }
@@ -69,7 +81,8 @@ const Ana = () => {
     };
 
     const messageSubmitHandler = () => {
-        setMessages([ ...messages, { role: 'user', content: message } ]);
+        const newMessages = [ ...messages, { role: 'user', content: message } ];
+        setMessages(newMessages);
         socket.emit('ollama-prompt', message);
         setMessage('');
         setIsLoading(true);
@@ -79,7 +92,7 @@ const Ana = () => {
         <div className='Ana-Container'>
             <div className='Ana-Chat-Container' data-isactive={isChatEnabled}>
                 <div className='Ana-Chat-Header-Container'>
-                    <h3 className='Ana-Chat-Title'>How can I help you today?</h3>
+                    <h3 className='Ana-Chat-Title'>{chatTitle}</h3>
                     <i className='Ana-Chat-Header-Icon-Container' onClick={() => setIsChatEnabled(false)}>
                         <IoClose />
                     </i>

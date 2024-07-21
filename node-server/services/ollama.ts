@@ -9,9 +9,11 @@ interface OllamaConfig {
     numBatch?: number;
     nmap?: boolean;
     f16?: boolean;
+    temperature?: number;
+    maxTokens?: number;
 }
 
-class Ollama {
+class Ollama{
     private model: string;
     private context: Message[] = [];
     private contextLimit: number;
@@ -27,8 +29,11 @@ class Ollama {
             nmap: config.nmap !== undefined ? config.nmap : true,
             f16: config.f16 !== undefined ? config.f16 : true
         };
-        this.addToContext({ role: 'system', content: "Your name is Ana. You are Vision's WebAR AI. Respond cordially and naturally with precise, concise answers. Vision WebAR is an open-source platform for developing augmented reality interfaces on mobile devices or tablets for non-tech people. " });
-    }
+        this.addToContext({
+            role: 'system',
+            content: "Your name is Ana. You are Vision's WebAR AI. Respond cordially, naturally, and with a friendly, sympathetic tone. Respond in the language the user asks you. Provide precise, concise answers. Vision WebAR is an open-source platform for developing augmented reality interfaces on mobile devices or tablets for non-tech people. Make users feel welcome and supported as a helpful companion."
+        });
+    };
 
     async streamResponse(prompt: string, responseHandler: (part: ChatResponse) => void): Promise<void> {
         try {
