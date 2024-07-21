@@ -1,12 +1,11 @@
 import React from 'react';
 import { BsStars } from 'react-icons/bs';
-import { TiArrowSortedUp } from 'react-icons/ti';
 import { PiSpeakerHigh } from "react-icons/pi";
 import { SlLike, SlDislike } from "react-icons/sl";
-import Input from '@components/form/Input';
 import useAna from '@hooks/useAna';
 import Loader from '@components/general/Loader';
 import AnaChatHeader from '@components/ana/AnaChatHeader';
+import AnaChatFooter from '@components/ana/AnaChatFooter';
 import './Ana.css';
 
 const Ana = () => {
@@ -107,32 +106,14 @@ const Ana = () => {
                         )
                     )}
                 </div>
-
-                <div className='Ana-Chat-Footer-Container'>
-                    {(messages.length >= 1 && !(!currentAssistantMessage.length && messages.length <= 1 && isLoading)) && (
-                        <div className='Ana-Chat-Footer-Suggests-Container'>
-                            {["What can I do with Vision's?", 'Ideas about inmersive experiences with WebAR', "I would like to meet you, who are you?"].map((suggest, index) => (
-                                <div className='Ana-Suggest-Container Extended' key={index} onClick={() => suggestHandler(suggest)}>
-                                    <p className='Ana-Suggest'>{suggest}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                    <Input 
-                        containerProps={{ className: 'Ana-Chat-Message-Input-Container' }}
-                        variant='Ana-Chat-Message-Input'
-                        placeholder='Message to Ana'
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        RightIconProps={{ 
-                            onClick: messageSubmitHandler,
-                            style: { opacity: (isLoading) ? (0.3) : (1) }
-                        }}
-                        RightIcon={() => (
-                            <TiArrowSortedUp />
-                        )}
-                    />
-                </div>
+                
+                <AnaChatFooter
+                    messages={messages}
+                    setMessage={setMessage}
+                    messageSubmitHandler={messageSubmitHandler}
+                    message={message}
+                    currentAssistantMessage={currentAssistantMessage}
+                    isLoading={isLoading} />
             </div>
             {!isChatEnabled && (
                 <div 
