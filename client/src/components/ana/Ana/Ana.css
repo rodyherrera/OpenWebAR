@@ -1,0 +1,136 @@
+.Ana-Go-To-Action-Container{
+    display: flex;
+    gap: .5rem;
+    padding: .5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5rem;
+    background: #121212;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.Ana-Chat-Title{
+    font-size: .85rem;
+    font-weight: 400;
+}
+
+.Ana-Go-To-Action-Container:active{
+    transform: scale(.98);
+}
+
+.Ana-Go-To-Action-Container:hover{
+    opacity: .95;
+}
+
+.Ana-Go-To-Action-Icon-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Ana-Container{
+    width: 380px;
+    position: absolute;
+    bottom: 2rem;
+    right: 2.5rem;
+    overflow: hidden;
+    border-radius: 1rem;
+    z-index: 200;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, .8);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.Ana-Chat-Header-Icon-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-size: 1.3rem;
+    right: 1.5rem;
+}
+
+.Ana-Chat-Header-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: .8rem 1rem;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.Ana-Suggest-Container{
+    background-color: #f1f1f1;
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.Ana-Suggest{
+    font-size: .65rem;
+}
+
+.Ana-Empty-Chat-Bottom-Container{
+    display: flex;
+    padding: .5rem;
+    gap: .5rem;
+}
+
+.Ana-Empty-Chat-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    flex-direction: column;
+}
+
+.Ana-Empty-Chat-Header-Title{
+    font-size: 1.5rem;
+}
+
+.Ana-Chat-Container{
+    border-radius: 2rem;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.Ana-Chat-Footer-Container{
+    padding: .5rem 1rem;
+}
+
+.Ana-Chat-Message-Input-Container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #f1f1f1;
+    border-radius: 2rem;
+    padding: .5rem;
+}
+
+.Ana-Chat-Message-Input-Container .Input-Icon-Container{
+    color: #f1f1f1;
+    background-color: #121212;
+    border-radius: 50%;
+    padding: .3rem;
+    width: 1.5rem;
+    font-size: 1rem;
+    height: 1.5rem;
+}
+
+@media screen and (max-width: 768px){
+    .Ana-Chat-Container{
+        height: 380px;  
+    }
+
+    .Ana-Container{
+        right: 0;
+        width: 95%;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+}
