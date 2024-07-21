@@ -114,21 +114,24 @@ const Ana = () => {
                                 ))}
                                 {currentAssistantMessage && (
                                     <div className={`Ana-Message-Container assistant`}>
-                                        <div className='Ana-Response-Options-Container'>
-                                            <i className='Ana-Message-Icon-Container' />
-                                            <div className='Ana-Response-Options-Bottom-Container'>
-                                                <i className='Ana-Response-Option'>
-                                                    <PiSpeakerHigh />
-                                                </i>
-                                                <i className='Ana-Response-Option'>
-                                                    <SlLike />
-                                                </i>
-                                                <i className='Ana-Response-Option'>
-                                                    <SlDislike />
-                                                </i>
-                                            </div>
-                                        </div>
                                         <span className='Ana-Message-Content'>{currentAssistantMessage}</span>
+                                        <div className='Ana-Message-Top-Assistant-Container'>
+                                            <div className='Ana-Response-Options-Container'>
+                                                <i className='Ana-Message-Icon-Container' />
+                                            </div>
+                                            <span className='Ana-Message-Content'>{content}</span>
+                                        </div>
+                                        <div className='Ana-Response-Options-Bottom-Container'>
+                                            <i className='Ana-Response-Option'>
+                                                <PiSpeakerHigh />
+                                            </i>
+                                            <i className='Ana-Response-Option'>
+                                                <SlLike />
+                                            </i>
+                                            <i className='Ana-Response-Option'>
+                                                <SlDislike />
+                                            </i>
+                                        </div>
                                     </div>
                                 )}
                             </div>
