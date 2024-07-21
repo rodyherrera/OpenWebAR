@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
 import { httpServer } from '@config/express';
-import { loadModel } from '@services/handpose';
+import HandposeDetector from '@services/handposeDetector';
 import mongoConnector from '@utilities/mongoConnector';
 import '@config/ws';
 
@@ -12,7 +12,7 @@ const SERVER_HOST = process.env.SERVER_HOST || '0.0.0.0';
 httpServer.listen(SERVER_PORT as number, SERVER_HOST, async () => {
     await Promise.all([
         mongoConnector(),
-        loadModel()
+        HandposeDetector.loadModel()
     ]);
     console.log(`@server.ts: server running at http://${SERVER_HOST}:${SERVER_PORT}/.`);
 });
