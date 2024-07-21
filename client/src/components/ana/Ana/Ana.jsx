@@ -1,12 +1,12 @@
 import React from 'react';
 import { BsStars } from 'react-icons/bs';
-import { IoClose } from 'react-icons/io5';
 import { TiArrowSortedUp } from 'react-icons/ti';
 import { PiSpeakerHigh } from "react-icons/pi";
 import { SlLike, SlDislike } from "react-icons/sl";
 import Input from '@components/form/Input';
 import useAna from '@hooks/useAna';
 import Loader from '@components/general/Loader';
+import AnaChatHeader from '@components/ana/AnaChatHeader';
 import './Ana.css';
 
 const Ana = () => {
@@ -27,19 +27,14 @@ const Ana = () => {
     return (
         <div className='Ana-Container'>
             <div className='Ana-Chat-Container' data-isactive={isChatEnabled}>
-                <div className='Ana-Chat-Header-Container'>
-                    <h3 className='Ana-Chat-Title'>{chatTitle}</h3>
-                    <i className='Ana-Chat-Header-Icon-Container' onClick={() => setIsChatEnabled(false)}>
-                        <IoClose />
-                    </i>
-                </div>
+                <AnaChatHeader chatTitle={chatTitle} setIsChatEnabled={toggleChatEnabled} />
 
                 <div className='Ana-Chat-Body-Container'>
                     {(!currentAssistantMessage.length && messages.length <= 1 && isLoading) ? (
                         <div className='Ana-Empty-Chat-Loading-Container'>
                             <Loader scale='0.5' />
                         </div>
-                    ) : (
+                    ) : (   
                         (messages.length >= 1) ? (
                             <div className='Ana-Messages-Container' ref={messagesContainerRef}>
                                 {messages.map(({ content, role }, index) => (

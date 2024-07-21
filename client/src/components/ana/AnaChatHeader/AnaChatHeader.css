@@ -1,0 +1,28 @@
+.Ana-Chat-Header-Container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: .8rem 1rem;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.Ana-Chat-Title{
+    font-size: .75rem;
+    font-weight: 400;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 70%;
+    margin: 0 auto;
+    text-overflow: ellipsis;
+}
+
+.Ana-Chat-Header-Icon-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-size: 1.3rem;
+    cursor: pointer;
+    right: 1.5rem;
+}
