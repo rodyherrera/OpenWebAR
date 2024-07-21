@@ -70,6 +70,16 @@
 
 .Ana-Suggest{
     font-size: .65rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.Ana-Suggest:hover{
+    opacity: .8;
+}
+
+.Ana-Suggest:active{
+    transform: scale(.98);
 }
 
 .Ana-Empty-Chat-Bottom-Container{

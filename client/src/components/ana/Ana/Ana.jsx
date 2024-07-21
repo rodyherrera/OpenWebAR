@@ -9,6 +9,7 @@ import Input from '@components/form/Input';
 import Loader from '@components/general/Loader';
 import './Ana.css';
 
+// NOTE: ALL THIS COMPONENT THIS REFACTOR.
 const Ana = () => {
     const [isChatEnabled, setIsChatEnabled] = useState(true);
     const [message, setMessage] = useState('');
@@ -59,6 +60,13 @@ const Ana = () => {
             wSocket.disconnect();
         };
     }, []);
+
+    const suggestHandler = (suggest) => {
+        setMessages([ ...messages, { role: 'user', content: suggest } ]);
+        socket.emit('ollama-prompt', suggest);
+        setMessage('');
+        setIsLoading(true);
+    };
 
     const messageSubmitHandler = () => {
         setMessages([ ...messages, { role: 'user', content: message } ]);
@@ -114,12 +122,11 @@ const Ana = () => {
                                 ))}
                                 {currentAssistantMessage && (
                                     <div className={`Ana-Message-Container assistant`}>
-                                        <span className='Ana-Message-Content'>{currentAssistantMessage}</span>
                                         <div className='Ana-Message-Top-Assistant-Container'>
                                             <div className='Ana-Response-Options-Container'>
                                                 <i className='Ana-Message-Icon-Container' />
                                             </div>
-                                            <span className='Ana-Message-Content'>{content}</span>
+                                            <span className='Ana-Message-Content'>{currentAssistantMessage}</span>
                                         </div>
                                         <div className='Ana-Response-Options-Bottom-Container'>
                                             <i className='Ana-Response-Option'>
@@ -138,7 +145,7 @@ const Ana = () => {
                         ) : (
                             <div className='Ana-Empty-Chat-Container'>
                                 {['I would like you to tell me a joke', 'Tell me a curious fact, surprise me', 'Are you aware of reality, Ana?'].map((suggest, index) => (
-                                    <div className='Ana-Suggest-Container' key={index}>
+                                    <div className='Ana-Suggest-Container' key={index} onClick={() => suggestHandler(suggest)}>
                                         <p className='Ana-Suggest'>{suggest}</p>
                                     </div>
                                 ))}
@@ -147,7 +154,7 @@ const Ana = () => {
                                 </div>
                                 <div className='Ana-Empty-Chat-Bottom-Container'>
                                     {["What can I do with Vision's?", 'Ideas about inmersive experiences with WebAR', "I would like to meet you, who are you?"].map((suggest, index) => (
-                                        <div className='Ana-Suggest-Container' key={index}>
+                                        <div className='Ana-Suggest-Container' key={index} onClick={() => suggestHandler(suggest)}>
                                             <p className='Ana-Suggest'>{suggest}</p>
                                         </div>
                                     ))}
@@ -161,7 +168,7 @@ const Ana = () => {
                     {(messages.length >= 1 && !(!currentAssistantMessage.length && messages.length <= 1 && isLoading)) && (
                         <div className='Ana-Chat-Footer-Suggests-Container'>
                             {["What can I do with Vision's?", 'Ideas about inmersive experiences with WebAR', "I would like to meet you, who are you?"].map((suggest, index) => (
-                                <div className='Ana-Suggest-Container Extended' key={index}>
+                                <div className='Ana-Suggest-Container Extended' key={index} onClick={() => suggestHandler(suggest)}>
                                     <p className='Ana-Suggest'>{suggest}</p>
                                 </div>
                             ))}
