@@ -20,20 +20,6 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.Ana-Suggest{
-    font-size: .65rem;
-    transition: .3s;
-    cursor: pointer;
-}
-
-.Ana-Suggest:hover{
-    opacity: .8;
-}
-
-.Ana-Suggest:active{
-    transform: scale(.98);
-}
-
 .Ana-Empty-Chat-Header-Title{
     font-size: 1.5rem;
 }

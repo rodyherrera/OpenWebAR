@@ -1,0 +1,19 @@
+.Ana-Suggest-Container{
+    background-color: #f1f1f1;
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.Ana-Suggest{
+    font-size: .65rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.Ana-Suggest:hover{
+    opacity: .8;
+}
+
+.Ana-Suggest:active{
+    transform: scale(.98);
+}
