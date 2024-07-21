@@ -77,10 +77,10 @@ const Ana = () => {
     
     return (
         <div className='Ana-Container'>
-            <div className='Ana-Chat-Container'>
+            <div className='Ana-Chat-Container' data-isactive={isChatEnabled}>
                 <div className='Ana-Chat-Header-Container'>
                     <h3 className='Ana-Chat-Title'>How can I help you today?</h3>
-                    <i className='Ana-Chat-Header-Icon-Container'>
+                    <i className='Ana-Chat-Header-Icon-Container' onClick={() => setIsChatEnabled(false)}>
                         <IoClose />
                     </i>
                 </div>
@@ -101,7 +101,7 @@ const Ana = () => {
                                                     <div className='Ana-Response-Options-Container'>
                                                         <i className='Ana-Message-Icon-Container' />
                                                     </div>
-                                                    <span className='Ana-Message-Content'>{content}</span>
+                                                    <p className='Ana-Message-Content'>{content}</p>
                                                 </div>
                                                 <div className='Ana-Response-Options-Bottom-Container'>
                                                     <i className='Ana-Response-Option'>

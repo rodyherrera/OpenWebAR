@@ -30,6 +30,14 @@
     justify-content: center;
 }
 
+.Ana-Container:has(.Ana-Chat-Container[data-isactive='true']){
+    width: 380px;
+}
+
+.Ana-Chat-Container[data-isactive='false']{
+    display: none;
+}
+
 .Ana-Container{
     width: 380px;
     position: absolute;
@@ -50,6 +58,7 @@
     align-items: center;
     position: absolute;
     font-size: 1.3rem;
+    cursor: pointer;
     right: 1.5rem;
 }
 
@@ -161,10 +170,13 @@
 
 .Ana-Message-Content{
     font-size: .75rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 .Ana-Message-Container{
     border-radius: 2rem;
+    height: fit-content;
     padding: .5rem 1rem;
     display: flex;
     flex-direction: column;
@@ -191,7 +203,6 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    height: -webkit-fill-available;
     margin-top: 4.5px;
 }
 
@@ -210,6 +221,7 @@
 }
 
 .Ana-Message-Container.assistant{
+    width: 100%;
     align-self: flex-start;
 }
 
