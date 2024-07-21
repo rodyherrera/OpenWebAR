@@ -1,17 +1,49 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Formik, useFormik } from 'formik';
 import { IoIosArrowRoundForward } from 'react-icons/io';
 import { PiPasswordThin } from "react-icons/pi";
+import { updateMyProfile } from '@services/authentication/operations';
 import Input from '@components/form/Input';
 import Button from '@components/general/Button';
 import RelatedItem from '@components/form/RelatedItem';
+import Loader from '@components/general/Loader';
 import './UserAccount.css';
 
 const UserAccount = () => {
-    const { user } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const { user, isOperationLoading } = useSelector((state) => state.auth);
+    const formik = useFormik({
+        initialValues: {
+            fullname: user.fullname,
+            email: user.email,
+            username: user.username
+        },
+        onSubmit(values){
+            dispatch(updateMyProfile(values));
+        }
+    });
+
+    const fields = [
+        {
+            name: 'fullname',
+            placeholder: 'Full name',
+            helperText: 'We want to have a relationship between you, let us know your name.'
+        },
+        {
+            name: 'email',
+            placeholder: 'Email Address',
+            helperText: 'We use your email address to send you notifications of the actions you take on the platform.'
+        },
+        {
+            name: 'username',
+            placeholder: 'Username',
+            helperText: 'What would you like us to call you?'
+        }
+    ];
 
     return (
-        <div className='User-Account-Container'>
+        <form onSubmit={formik.handleSubmit} className='User-Account-Container'>
             <div className='User-Account-Left-Container'>
                 <div className='User-Account-Left-Header-Container'>
                     <div className='User-Account-Left-Header-Title-Container'>
@@ -20,34 +52,24 @@ const UserAccount = () => {
                     </div>
                 </div>
                 <div className='User-Account-Left-Fields-Container'>
-                    {[
-                        {
-                            placeholder: 'Full name',
-                            value: user.fullname,
-                            helperText: 'We want to have a relationship between you, let us know your name.'
-                        },
-                        {
-                            placeholder: 'Email Address',
-                            value: user.email,
-                            helperText: 'We use your email address to send you notifications of the actions you take on the platform.'
-                        },
-                        {
-                            placeholder: 'Username',
-                            value: user.username,
-                            helperText: 'What would you like us to call you?'
-                        }
-                    ].map((props, index) => (
+                    {fields.map((field, index) => (
                         <div className='User-Account-Field-Container' key={index}>
-                            <Input {...props} />
+                            <Input {...field} value={formik.values[field.name]} onChange={formik.handleChange}  />
                         </div>
                     ))}
                 </div>
                 <div className='User-Account-Left-Bottom-Container'>
-                    <Button 
-                        Icon={IoIosArrowRoundForward}
-                        type='submit'
-                        value='Save' 
-                        variant='Contained Small Mobile-Full-Width' />
+                    {isOperationLoading ? (
+                        <div className='User-Account-Loading-Container'>
+                            <Loader scale='0.6' />
+                        </div>
+                    ) : (
+                        <Button 
+                            Icon={IoIosArrowRoundForward}
+                            type='submit'
+                            value='Save' 
+                            variant='Contained Small Mobile-Full-Width' />
+                    )}
                 </div>
             </div>
 
@@ -56,9 +78,10 @@ const UserAccount = () => {
                     title='Change Password'
                     to='/auth/account/change-password/'
                     description='Update your password and improve the security of your account in simple steps.'
-                    Icon={PiPasswordThin}  />
+                    Icon={PiPasswordThin}  
+                />
             </div>
-        </div>
+        </form>
     );
 };
 

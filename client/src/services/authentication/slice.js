@@ -5,6 +5,7 @@ const state = {
     isAuthenticated: false,
     isCachedAuthLoading: true,
     isLoading: false,
+    isOperationLoading: false,
     error: null
 };
 
@@ -17,6 +18,9 @@ const authSlice = createSlice({
         },
         setError(state, action){
             state.error = action.payload;
+        },
+        setIsOperationLoading(state, action){
+            state.isOperationLoading = action.payload;
         },
         setIsCachedAuthLoading(state, action){
             state.isCachedAuthLoading = action.payload;
@@ -32,6 +36,7 @@ const authSlice = createSlice({
 
 export const { 
     setIsLoading,
+    setIsOperationLoading,
     setIsCachedAuthLoading, 
     setUser, 
     setError,

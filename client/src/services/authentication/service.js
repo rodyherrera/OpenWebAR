@@ -33,3 +33,14 @@ export const myProfile = AuthenticationAPI.register({
     path: '/me/',
     method: 'GET'
 });
+
+/**
+ * @function updateMyProfile
+ * @description Sends a request to update the profile information of the authenticated user.
+ * @param {Object} body - Contains the updated profile data.
+ * @returns {Promise} Resolves or rejects based on the API request outcome. 
+*/
+export const updateMyProfile = AuthenticationAPI.register({
+    path: '/me/',
+    method: 'PATCH'
+});
