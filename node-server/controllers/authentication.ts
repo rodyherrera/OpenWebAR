@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '@models/user';
 import HandlerFactory from '@controllers/handlerFactory';
+import validator from 'validator';
 import { catchAsync, filterObject } from '@utilities/runtime';
 
 interface AuthenticatedRequest extends Request{
@@ -37,11 +38,14 @@ const createAndSendToken = (res: Response, statusCode: number, user: IUser): voi
 };
 
 export const signIn = catchAsync(async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const { email, password } = req.body;
-    if(!email || !password){
+    const { usernameOrEmail, password } = req.body;
+    if(!usernameOrEmail || !password){
         return next(new Error('Authentication::EmailOrPasswordRequired'));
     }
-    const requestedUser = await User.findOne({ email }).select('+password');
+    let filter: { email?: string, username?: string } = {};
+    if(validator.isEmail(usernameOrEmail)) filter.email = usernameOrEmail;
+    else filter.username = usernameOrEmail;
+    const requestedUser = await User.findOne(filter).select('+password');
     if(!requestedUser || !(await requestedUser.isCorrectPassword(password, requestedUser.password))){
         return next(new Error('Authentication::EmailOrPasswordIncorrect'));
     }
