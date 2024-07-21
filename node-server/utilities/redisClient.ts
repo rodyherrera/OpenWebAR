@@ -1,6 +1,6 @@
-import redis from 'redis';
+import redis, { RedisClientType } from 'redis';
 
-let redisClient = null;
+let redisClient: RedisClientType | null = null;
 
 export const redisConnector = async () => {
     try{
@@ -8,7 +8,7 @@ export const redisConnector = async () => {
         redisClient = redis.createClient({
             socket: {
                 host: process.env.REDIS_HOST,
-                port: process.env.REDIS_PORT
+                port: parseInt(process.env.REDIS_PORT || 6379)
             },
             password: process.env.REDIS_PASSWORD
         });

@@ -10,8 +10,10 @@ class ImageSimilaritySearch{
     };
 
     static async calculatePHash(imagePath: string): Promise<number[]>{
-        const cachedHash = await redisClient.get(`vision/phash:${imagePath}`);
-        if(cachedHash) return JSON.parse(cachedHash);
+        if(redisClient){
+            const cachedHash = await redisClient.get(`vision/phash:${imagePath}`);
+            if(cachedHash) return JSON.parse(cachedHash);
+        }
         const image = await Jimp.read(imagePath);
         image.resize(32, 32);
         image.grayscale();
@@ -24,7 +26,7 @@ class ImageSimilaritySearch{
             }
         }
         const pHash = hash.toString(2).split('').map((bit) => parseInt(bit, 10));
-        await redisClient.set(`vision/phash:${imagePath}`);
+        if(redisClient) await redisClient.set(`vision/phash:${imagePath}`, pHash);
         return pHash;
     };
 
