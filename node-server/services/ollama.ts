@@ -51,7 +51,7 @@ class Ollama {
     }
 
     private addToContext(message: Message): void {
-        if (this.context.length >= this.contextLimit) {
+        if(this.context.length >= this.contextLimit){
             this.context = this.context.slice(-this.contextLimit + 1);
         }
         this.context.push(message);

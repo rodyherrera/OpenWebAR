@@ -1,7 +1,7 @@
 import React from 'react';
 import './Input.css';
 
-const Input = ({ containerProps, RightIcon, ...props }) => {
+const Input = ({ containerProps, RightIcon, RightIconProps = {}, ...props }) => {
 
     return (
         <div className='Input-Container' {...containerProps}>
@@ -9,7 +9,7 @@ const Input = ({ containerProps, RightIcon, ...props }) => {
                 className={'Input '.concat(props?.variant || '')}
                 {...props} />
             {RightIcon && (
-                <i className='Input-Icon-Container'>
+                <i className='Input-Icon-Container' {...RightIconProps}>
                     <RightIcon />
                 </i>
             )}

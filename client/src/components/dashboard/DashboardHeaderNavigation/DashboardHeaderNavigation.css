@@ -12,6 +12,12 @@
     cursor: pointer;
 }
 
+.Ana-Empty-Chat-Loading-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .Dashboard-Header-Navigation-Item-Container:hover .Dashboard-Header-Navigation-Item-Title{
     color: #121212;
 }
@@ -39,6 +45,6 @@
     .Dashboard-Header-Navigation-Container{
         overflow-x: scroll;
         width: 100%;
-        padding-bottom: .5rem;
+        padding-bottom: 1.5rem;
     }
 }
