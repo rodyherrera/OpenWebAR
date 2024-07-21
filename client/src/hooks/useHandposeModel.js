@@ -1,12 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setGesture } from '@services/core/slice';
-import { io } from 'socket.io-client';
+import useWebSocket from '@hooks/useWebSocket';
 
 const useHandposeModel = () => {
     const dispatch = useDispatch();
-    const [socket, setSocket] = useState(null);
-    const [isConnected, setIsConnected] = useState(false);
+    const { socket, isConnected } = useWebSocket();
     const videoRef = useRef(null);
     const isProcessing = useRef(false);
     const canvasRef = useRef(null);
@@ -14,33 +13,17 @@ const useHandposeModel = () => {
     const animationFrameIdRef = useRef(null);
 
     useEffect(() => {
-        const wSocket = io('wss://8080--main--trinity--rodyherrera--c3cp3puaetl6s.pit-1.try.coder.app', {
-            transports: ['websocket'],
-            reconnectionDelayMax: 10000
-        });
-
-        wSocket.on('connect', () => {
-            console.log('@hooks/useHandposeModel: ws connected.');
-            setIsConnected(true);
-        });
-
-        wSocket.on('disconnect', () => {
-            setIsConnected(false);
-            console.log('@hooks/useHandposeModel: ws disconnected.');
-        });
-
-        wSocket.on('gesture', (gesture) => {
+        if(isConnected) return;
+        socket.on('gesture', (gesture) => {
             dispatch(setGesture(gesture));
             isProcessing.current = false;
         });
-        setSocket(wSocket);
         return () => {
-            wSocket.disconnect();
             if(animationFrameIdRef.current){
                 cancelAnimationFrame(animationFrameIdRef.current);
             }
         };
-    }, []);
+    }, [isConnected]);
 
     const captureAndSendFrame = useCallback(() => {
         if(!isConnected || isProcessing.current){
