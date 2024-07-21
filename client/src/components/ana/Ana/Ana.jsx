@@ -8,7 +8,7 @@ import Loader from '@components/general/Loader';
 import './Ana.css';
 
 const Ana = () => {
-    const [isChatEnabled, setIsChatEnabled] = useState(false);
+    const [isChatEnabled, setIsChatEnabled] = useState(true);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [isConnected, setIsConnected] = useState(false);
@@ -117,6 +117,15 @@ const Ana = () => {
                 </div>
 
                 <div className='Ana-Chat-Footer-Container'>
+                    {(messages.length >= 1) && (
+                        <div className='Ana-Chat-Footer-Suggests-Container'>
+                            {["What can I do with Vision's?", 'Ideas about inmersive experiences with WebAR', "I would like to meet you, who are you?"].map((suggest, index) => (
+                                <div className='Ana-Suggest-Container Extended' key={index}>
+                                    <p className='Ana-Suggest'>{suggest}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                     <Input 
                         containerProps={{ className: 'Ana-Chat-Message-Input-Container' }}
                         variant='Ana-Chat-Message-Input'
@@ -133,7 +142,7 @@ const Ana = () => {
                     />
                 </div>
             </div>
-            {!true && (
+            {!isChatEnabled && (
                 <div 
                     className='Ana-Go-To-Action-Container' 
                     onClick={() => setIsChatEnabled(true)}
