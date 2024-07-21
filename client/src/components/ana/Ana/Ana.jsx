@@ -6,6 +6,7 @@ import { TiArrowSortedUp } from 'react-icons/ti';
 import { PiSpeakerHigh } from "react-icons/pi";
 import { SlLike, SlDislike } from "react-icons/sl";
 import Input from '@components/form/Input';
+import useWebSocket from '@hooks/useWebSocket';
 import Loader from '@components/general/Loader';
 import './Ana.css';
 
@@ -14,11 +15,10 @@ const Ana = () => {
     const [isChatEnabled, setIsChatEnabled] = useState(true);
     const [message, setMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [isConnected, setIsConnected] = useState(false);
     const [messages, setMessages] = useState([]);
-    const [socket, setSocket] = useState(null);
     const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
     const [chatTitle, setChatTitle] = useState('How can I help you today?')
+    const { socket, isConnected } = useWebSocket();
     const messagesContainerRef = useRef(null);
 
     useEffect(() => {
@@ -31,22 +31,8 @@ const Ana = () => {
     }, [messages, currentAssistantMessage]);
 
     useEffect(() => {
-        const wSocket = io('https://8000--main--trinity--rodyherrera--c3cp3puaetl6s.pit-1.try.coder.app', {
-            transports: ['websocket'],
-            reconnectionDelayMax: 10000
-        });
-
-        wSocket.on('connect', () => {
-            setIsConnected(true);
-        });
-
-        wSocket.on('disconnect', () => {
-            setIsConnected(false);
-        });
-
-        // REFACTOR THIS!!
-        let titleBuff = '';
-        wSocket.on('ollama-generate-title-stream-response', ({ message, done }) => {
+        if(!isConnected) return;
+        socket.on('ollama-generate-title-stream-response', ({ message, done }) => {
             titleBuff += message.content;
             if(done){
                 setChatTitle(titleBuff.replaceAll('"', ''));
@@ -54,24 +40,19 @@ const Ana = () => {
             }
         });
 
-        wSocket.on('ollama-stream-response', ({ message, done }) => {
+        socket.on('ollama-stream-response', ({ message, done }) => {
             setCurrentAssistantMessage((prev) => {
                 const assistantMessage = prev + message.content;
                 if(done){
                     setMessages((prev) => [ ...prev, { role: 'assistant', content: assistantMessage } ]);
-                    wSocket.emit('ollama-generate-title', JSON.stringify(messages.slice(0, 2)));
+                    socket.emit('ollama-generate-title', JSON.stringify(messages.slice(0, 2)));
                     setIsLoading(false);
                     return '';
                 }
                 return assistantMessage;
             });
         });
-
-        setSocket(wSocket);
-        return () => {
-            wSocket.disconnect();
-        };
-    }, []);
+    }, [isConnected]);
 
     const suggestHandler = (suggest) => {
         setMessages([ ...messages, { role: 'user', content: suggest } ]);
