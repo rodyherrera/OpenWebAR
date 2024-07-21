@@ -1,20 +1,25 @@
 .User-Account-Container{
     display: flex;
+    justify-content: space-between;
+}
+
+.User-Account-Left-Container{
+    display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.User-Account-Header-Title-Container{
+.User-Account-Left-Header-Title-Container{
     display: flex;
     flex-direction: column;
     gap: .5rem;
 }
 
-.User-Account-Header-Description{
+.User-Account-Left-Header-Description{
     font-size: .85rem;
 }
 
-.User-Account-Fields-Container{
+.User-Account-Left-Fields-Container{
     display: flex;
     flex-direction: column;
     gap: 1rem;
