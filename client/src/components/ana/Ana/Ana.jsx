@@ -1,11 +1,11 @@
 import React from 'react';
-import { BsStars } from 'react-icons/bs';
 import useAna from '@hooks/useAna';
 import Loader from '@components/general/Loader';
 import AnaChatMessages from '@components/ana/AnaChatMessages';
 import AnaChatHeader from '@components/ana/AnaChatHeader';
 import AnaChatFooter from '@components/ana/AnaChatFooter';
 import AnaChatEmpty from '@components/ana/AnaChatEmpty';
+import AnaGoToAction from '@components/ana/AnaGoToAction';
 import './Ana.css';
 
 const Ana = () => {
@@ -54,15 +54,7 @@ const Ana = () => {
                     isLoading={isLoading} />
             </div>
             {!isChatEnabled && (
-                <div 
-                    className='Ana-Go-To-Action-Container' 
-                    onClick={toggleChatEnabled}
-                >
-                    <span className='Ana-Go-To-Action-Text'>Chat with Ana</span>
-                    <i className='Ana-Go-To-Action-Icon-Container'>
-                        <BsStars />
-                    </i>
-                </div>
+                <AnaGoToAction toggleChatEnabled={toggleChatEnabled} />
             )}
         </div>
     );
