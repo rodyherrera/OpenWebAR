@@ -1,0 +1,13 @@
+.Ana-Empty-Chat-Container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    flex-direction: column;
+}
+
+.Ana-Empty-Chat-Bottom-Container{
+    display: flex;
+    padding: .5rem;
+    gap: .5rem;
+}

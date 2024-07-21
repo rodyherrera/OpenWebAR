@@ -47,12 +47,6 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.Ana-Suggest-Container{
-    background-color: #f1f1f1;
-    padding: .5rem;
-    border-radius: .5rem;
-}
-
 .Ana-Suggest{
     font-size: .65rem;
     transition: .3s;
@@ -67,20 +61,6 @@
     transform: scale(.98);
 }
 
-.Ana-Empty-Chat-Bottom-Container{
-    display: flex;
-    padding: .5rem;
-    gap: .5rem;
-}
-
-.Ana-Empty-Chat-Container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: .5rem;
-    flex-direction: column;
-}
-
 .Ana-Empty-Chat-Header-Title{
     font-size: 1.5rem;
 }
@@ -91,16 +71,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.Ana-Suggest-Container.Extended{
-    padding: .25rem .5rem;
-    min-width: 150px;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    line-clamp: 1; 
-    -webkit-box-orient: vertical;
-    overflow: hidden;
 }
 
 @media screen and (max-width: 768px){
