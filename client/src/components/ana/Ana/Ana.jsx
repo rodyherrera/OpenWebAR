@@ -1,74 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { BsStars } from 'react-icons/bs';
 import { IoClose } from 'react-icons/io5';
-import { io } from 'socket.io-client';
 import { TiArrowSortedUp } from 'react-icons/ti';
 import { PiSpeakerHigh } from "react-icons/pi";
 import { SlLike, SlDislike } from "react-icons/sl";
 import Input from '@components/form/Input';
-import useWebSocket from '@hooks/useWebSocket';
+import useAna from '@hooks/useAna';
 import Loader from '@components/general/Loader';
 import './Ana.css';
 
-// NOTE: ALL THIS COMPONENT THIS REFACTOR.
 const Ana = () => {
-    const [isChatEnabled, setIsChatEnabled] = useState(true);
-    const [message, setMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const [messages, setMessages] = useState([]);
-    const [currentAssistantMessage, setCurrentAssistantMessage] = useState('');
-    const [chatTitle, setChatTitle] = useState('How can I help you today?')
-    const { socket, isConnected } = useWebSocket();
-    const messagesContainerRef = useRef(null);
+    const {
+        isChatEnabled,
+        message,
+        isLoading,
+        messages,
+        currentAssistantMessage,
+        chatTitle,
+        messagesContainerRef,
+        setMessage,
+        suggestHandler,
+        messageSubmitHandler,
+        toggleChatEnabled
+    } = useAna();
 
-    useEffect(() => {
-        const scrollToBottom = () => {
-            if(messagesContainerRef.current){
-                messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
-            }
-        };
-        scrollToBottom();
-    }, [messages, currentAssistantMessage]);
-
-    useEffect(() => {
-        if(!isConnected) return;
-        socket.on('ollama-generate-title-stream-response', ({ message, done }) => {
-            titleBuff += message.content;
-            if(done){
-                setChatTitle(titleBuff.replaceAll('"', ''));
-                titleBuff = '';
-            }
-        });
-
-        socket.on('ollama-stream-response', ({ message, done }) => {
-            setCurrentAssistantMessage((prev) => {
-                const assistantMessage = prev + message.content;
-                if(done){
-                    setMessages((prev) => [ ...prev, { role: 'assistant', content: assistantMessage } ]);
-                    socket.emit('ollama-generate-title', JSON.stringify(messages.slice(0, 2)));
-                    setIsLoading(false);
-                    return '';
-                }
-                return assistantMessage;
-            });
-        });
-    }, [isConnected]);
-
-    const suggestHandler = (suggest) => {
-        setMessages([ ...messages, { role: 'user', content: suggest } ]);
-        socket.emit('ollama-prompt', suggest);
-        setMessage('');
-        setIsLoading(true);
-    };
-
-    const messageSubmitHandler = () => {
-        const newMessages = [ ...messages, { role: 'user', content: message } ];
-        setMessages(newMessages);
-        socket.emit('ollama-prompt', message);
-        setMessage('');
-        setIsLoading(true);
-    };
-    
     return (
         <div className='Ana-Container'>
             <div className='Ana-Chat-Container' data-isactive={isChatEnabled}>
@@ -187,7 +142,7 @@ const Ana = () => {
             {!isChatEnabled && (
                 <div 
                     className='Ana-Go-To-Action-Container' 
-                    onClick={() => setIsChatEnabled(true)}
+                    onClick={toggleChatEnabled}
                 >
                     <span className='Ana-Go-To-Action-Text'>Chat with Ana</span>
                     <i className='Ana-Go-To-Action-Icon-Container'>
