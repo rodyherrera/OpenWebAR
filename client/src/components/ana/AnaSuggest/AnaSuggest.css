@@ -17,3 +17,14 @@
 .Ana-Suggest:active{
     transform: scale(.98);
 }
+
+.Ana-Suggest-Container.Extended{
+    width: 170px;
+}
+
+.Ana-Suggest-Container.Extended .Ana-Suggest{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}

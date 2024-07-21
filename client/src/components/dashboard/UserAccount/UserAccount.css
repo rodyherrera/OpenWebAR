@@ -1,0 +1,21 @@
+.User-Account-Container{
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.User-Account-Header-Title-Container{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.User-Account-Header-Description{
+    font-size: .85rem;
+}
+
+.User-Account-Fields-Container{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

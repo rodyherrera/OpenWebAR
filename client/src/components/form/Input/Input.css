@@ -26,6 +26,16 @@
     border: 1px solid #0071e3;
 }
 
+.Input-Helper-Text{
+    font-size: .8rem;
+    color: #535353;
+}
+
+.Input-Helper-Text-Container{
+    padding: .3rem 1rem 0;
+    width: 350px;
+}
+
 @media screen and (max-width: 768px){
     .Input-Container{
         height: 45px;

@@ -50,6 +50,7 @@ const Ana = () => {
                     setMessage={setMessage}
                     messageSubmitHandler={messageSubmitHandler}
                     message={message}
+                    suggestHandler={suggestHandler}
                     currentAssistantMessage={currentAssistantMessage}
                     isLoading={isLoading} />
             </div>

@@ -47,8 +47,18 @@
     color: #FFFFFF;
 }
 
+.Button-Container.Small{
+    padding: .3rem 2.5rem;
+    min-height: 32px;
+    font-size: .9rem;
+}
+
 @media screen and (max-width: 768px){
     .Button-Container.Contained{
         border-radius: 5rem;
+    }
+    
+    .Button-Container.Mobile-Full-Width{
+        width: 100%;;
     }
 }

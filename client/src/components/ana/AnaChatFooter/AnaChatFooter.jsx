@@ -1,11 +1,13 @@
 import React from 'react';
 import { TiArrowSortedUp } from 'react-icons/ti';
 import Input from '@components/form/Input';
+import AnaSuggest from '@components/ana/AnaSuggest';
 import './AnaChatFooter.css';
 
 const AnaChatFooter = ({ 
     messages, 
     setMessage, 
+    suggestHandler,
     messageSubmitHandler, 
     message, 
     currentAssistantMessage, 
@@ -16,9 +18,7 @@ const AnaChatFooter = ({
             {(messages.length >= 1 && !(!currentAssistantMessage.length && messages.length <= 1 && isLoading)) && (
                 <div className='Ana-Chat-Footer-Suggests-Container'>
                     {["What can I do with Vision's?", 'Ideas about inmersive experiences with WebAR', "I would like to meet you, who are you?"].map((suggest, index) => (
-                        <div className='Ana-Suggest-Container Extended' key={index} onClick={() => suggestHandler(suggest)}>
-                            <p className='Ana-Suggest'>{suggest}</p>
-                        </div>
+                        <AnaSuggest variant='Extended' suggest={suggest} suggestHandler={suggestHandler} key={index} />
                     ))}
                 </div>
             )}
