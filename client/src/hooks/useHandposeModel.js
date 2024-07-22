@@ -13,7 +13,7 @@ const useHandposeModel = () => {
     const animationFrameIdRef = useRef(null);
 
     useEffect(() => {
-        if(isConnected) return;
+        if(!isConnected) return;
         socket.on('gesture', (gesture) => {
             dispatch(setGesture(gesture));
             isProcessing.current = false;
