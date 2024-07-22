@@ -24,3 +24,17 @@
     align-items: center;
     justify-content: center;
 }
+
+@media screen and (max-width: 768px){
+    .Ana-Go-To-Action-Text{
+        font-size: .8rem;
+    }
+
+    .Ana-Go-To-Action-Container{
+        padding: .6rem 0;
+    }
+
+    .Ana-Go-To-Action-Icon-Container{
+        font-size: 1.1rem;
+    }
+}

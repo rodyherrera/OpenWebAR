@@ -7,7 +7,7 @@
 }
 
 .Ana-Container{
-    width: 380px;
+    width: 200px;
     position: absolute;
     bottom: 2rem;
     right: 2.5rem;
@@ -37,11 +37,15 @@
         height: 380px;  
     }
 
-    .Ana-Container{
-        right: 0;
+    .Ana-Container:has(.Ana-Chat-Container[data-isactive='true']){
         width: 95%;
-        position: absolute;
         left: 50%;
         transform: translate(-50%, 0%);
+    }
+    
+    .Ana-Container{
+        right: 1rem;
+        width: 180px;
+        position: absolute;
     }
 }

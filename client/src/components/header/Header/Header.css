@@ -10,7 +10,8 @@
 }
 
 .Header-Container-Wrapper{
-    background: #f5f5f7;
+    border-bottom: 1px solid #f5f5f7;
+    box-shadow: -1px -1px 6px 0 #f5f5f7;
 }
 
 @media screen and (max-width: 768px){

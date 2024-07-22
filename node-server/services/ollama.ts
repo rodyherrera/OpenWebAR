@@ -35,9 +35,9 @@ class Ollama{
         });
     };
 
-    async streamResponse(prompt: string, responseHandler: (part: ChatResponse) => void): Promise<void> {
+    async streamResponse(prompt: string, images: string[] = [], responseHandler: (part: ChatResponse) => void): Promise<void> {
         try {
-            this.addToContext({ role: 'user', content: prompt });
+            this.addToContext({ role: 'user', images, content: prompt });
             const response = await ollama.chat({
                 model: this.model,
                 messages: this.context,
