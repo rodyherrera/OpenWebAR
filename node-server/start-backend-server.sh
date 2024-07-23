@@ -16,6 +16,14 @@ install_package(){
     fi
 }
 
+if ! command_exists ollama; then
+    echo '@start-backend-server.sh: "ollama" is not installed, it will try to install automatically.'
+    if ! command_exists curl; then
+        install_package curl
+    fi
+    curl -fsSL https://ollama.com/install.sh | sh
+fi
+
 if ! command_exists python3; then
     echo '@start-backend-server.sh: "python3" is not installed, it will try to install automatically.'
     install_package python3
@@ -61,6 +69,9 @@ adjusted_threads=$((cores - 1))
 if [ "$adjusted_threads" -lt 1 ]; then
   adjusted_threads=1
 fi
+
+echo '@start-backend-server.sh: starting ollama server...'
+ollama serve > /dev/null 2>&1
 
 echo '@start-backend-server.sh: starting rembg api server...'
 export BROWSER=none
