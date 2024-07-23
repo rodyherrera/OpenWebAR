@@ -3,13 +3,6 @@ import fs from 'fs/promises';
 
 interface RemoveBackgroundParams{
     url: string;
-    model: string;
-    a: boolean;
-    af: number;
-    ab: number;
-    ae: number;
-    om: boolean;
-    ppm: boolean;
 };
 
 export const removeBackground = async (params: RemoveBackgroundParams, outputPath: string): Promise<string> => {
@@ -17,14 +10,7 @@ export const removeBackground = async (params: RemoveBackgroundParams, outputPat
     try{
         const response = await axios.get(BASE_URL, {
             params: {
-                url: params.url,
-                model: params.model,
-                a: params.a.toString(),
-                af: params.af,
-                ab: params.ab,
-                ae: params.ae,
-                om: params.om.toString(),
-                ppm: params.ppm.toString()
+                url: params.url
             },
             responseType: 'arraybuffer'
         });

@@ -1,13 +1,13 @@
-import RemoveBackground from 'remove-bg-node';
+import removeBackground from '@services/removeBackground';
+import { Request, Response, NextFunction } from 'express';
 
-const removeBackground = async (req, res, next) => {
+const removeBackgroundMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     if(!req.file){
         next();
         return;
     }
-    const rm = new RemoveBackground();
-    await rm.asyncRemoveBackground(req.file.path, req.file.path);
+    removeBackground({ url: req.file.path }, req.file.path);
     next();
 };
 
-export default removeBackground;
+export default removeBackgroundMiddleware;

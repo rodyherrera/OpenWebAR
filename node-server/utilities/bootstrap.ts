@@ -1,4 +1,5 @@
 import { Application, RequestHandler } from 'express';
+import fs from 'fs';
 
 /**
  * Formats a route name to a URL-friendly format.
@@ -9,12 +10,20 @@ const formatRoute = (route: string): string => {
     return route.split(/(?=[A-Z])/).join('-').toLowerCase();
 };
 
+const ensurePublicFolderExists = (): void => {
+    const publicFolderPath = './public/';
+    if(!fs.existsSync(publicFolderPath)){
+        fs.mkdirSync(publicFolderPath, { recursive: true });
+    }
+};
+
 /**
  * Configures the Express application with the given routes and middlewares.
  * @param {ConfigureAppParams} params - The configuration parameters.
  * @returns {Promise<void>} A promise that resolves when the configuration is complete.
 */
 export const configureApp = async ({ app, routes, suffix, middlewares }: ConfigureAppParams): Promise<void> => {
+    ensurePublicFolderExists();
     middlewares.forEach((middlewares) => app.use(middlewares));
     try{
         const routePromises = routes.map(async (route) => {

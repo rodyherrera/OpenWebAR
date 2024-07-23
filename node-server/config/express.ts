@@ -23,10 +23,11 @@ configureApp({
         helmet(),
         compression(),
         bodyParser.json(),
-        bodyParser.urlencoded({ extended: true })
+        bodyParser.urlencoded({ extended: true }),
     ]
 });
 
+app.use(express.static('public'))
 app.use(globalErrorHandler);
 
 export { httpServer, io, app };
