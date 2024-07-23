@@ -19,7 +19,6 @@ const Layout = () => {
         <React.Fragment>
             <Header />
             <Outlet />
-            <Ana />
         </React.Fragment>
     );
 };

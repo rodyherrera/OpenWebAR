@@ -12,7 +12,6 @@ export const findSimilarEntity = catchAsync(async (req: Request, res: Response):
         return;
     }
     const { file } = req;
-    console.log(file);
     res.status(200).json({
         status: 'success'
     })

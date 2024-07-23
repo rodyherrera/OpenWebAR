@@ -11,14 +11,17 @@ const initializeOllama = (modelEnvVariable: string, additionalOptions = {}) => {
 };
 
 const imageHandler = async (blob: string, socket: Socket) => {
-    const handposeDetector = new HandposeDetector();
-    const tensor = await HandposeDetector.blobToTensor(blob);
-    if(!tensor){
-        console.log('@controllers/ws: error converting blob to tensor.');
-        return;
+    try{
+        const handposeDetector = new HandposeDetector();
+        const tensor = await HandposeDetector.blobToTensor(blob);
+        if(!tensor){
+            return;
+        }
+        const gesture = await handposeDetector.getPredictions(tensor);
+        socket.emit('gesture', gesture);
+    }catch(error){
+        console.log('@controllers/ws: error converting blob to tensor.', error);
     }
-    const gesture = await handposeDetector.getPredictions(tensor);
-    socket.emit('gesture', gesture);
 };
 
 const ollamaHandler = async (action: 'vision' | 'prompt' | 'generate-title', data: string, socket: Socket) => {
@@ -51,7 +54,6 @@ const ollamaHandler = async (action: 'vision' | 'prompt' | 'generate-title', dat
 };
 
 const connectionHandler = (socket: Socket) => {
-    console.log('@controllers/ws: client connected.');
     socket.on('image', (message: string) => imageHandler(message, socket));
     socket.on('ollama-prompt', (prompt: string) => ollamaHandler('prompt', prompt, socket));
     socket.on('ollama-generate-title', (ctx: string) => ollamaHandler('generateTitle', ctx, socket));
