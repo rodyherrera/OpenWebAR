@@ -5,6 +5,13 @@ export const filterObject = (object: Record<string, any>, ...fields: string[]): 
     return _.pick(object, fields);
 };
 
+export const extractImageNameFromUrl = (url: string): string => {
+    const parsedUrl = new URL(url);
+    const pathname = parsedUrl.pathname;
+    const fileName = pathname.split('/').pop();
+    return fileName || '';
+};
+
 export const normalizeUrl = (src: string, baseUrl: string): string | null => {
     try{
         if(!src.startsWith('http://') && !src.startsWith('https://')){

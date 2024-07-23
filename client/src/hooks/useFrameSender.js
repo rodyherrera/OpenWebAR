@@ -40,7 +40,9 @@ const useFrameSender = () => {
         const formData = new FormData();
         formData.append('file', blob, 'frame.webp');
         try{
-            await axios.post(import.meta.env.VITE_SERVER, formData);
+            const { VITE_SERVER, VITE_API_SUFFIX } = import.meta.env;
+            const endpoint = VITE_SERVER + VITE_API_SUFFIX + '/entity/find-similar/';
+            await axios.post(endpoint, formData);
         }catch(error){
             console.error('@hooks/useFrameSender.js: error sending the frame to server:', error);
         }finally{

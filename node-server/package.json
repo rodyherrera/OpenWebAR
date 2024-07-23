@@ -8,12 +8,13 @@
   },
   "main": "server.ts",
   "scripts": {
-    "start": "TF_CPP_MIN_LOG_LEVEL=2 npx tsx server.ts"
+    "start": "bash start-backend-server.sh"
   },
   "dependencies": {
     "@tensorflow-models/handpose": "^0.1.0",
     "@tensorflow/tfjs-backend-wasm": "^4.20.0",
     "@tensorflow/tfjs-node": "^4.20.0",
+    "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
@@ -24,9 +25,10 @@
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
     "ollama": "^0.5.6",
-    "readline": "^1.3.0",
     "redis": "^4.6.15",
+    "remove-bg-node": "^1.0.3",
     "sharp": "^0.33.4",
     "socket.io": "^4.7.5",
     "validator": "^13.12.0"
@@ -38,6 +40,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/lodash": "^4.17.7",
     "@types/mongoose": "^5.11.97",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.12.12",
     "@types/validator": "^13.12.0",
     "ts-node": "^10.9.2",
