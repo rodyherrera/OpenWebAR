@@ -12,6 +12,8 @@ const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, { cors: { origin: process.env.CORS_ORIGIN } });
 
+app.use(express.static('public'));
+
 configureApp({
     app,
     suffix: '/api/v1/',
@@ -27,7 +29,7 @@ configureApp({
     ]
 });
 
-app.use(express.static('public'))
+app.use(express.static('./public/'));
 app.use(globalErrorHandler);
 
 export { httpServer, io, app };

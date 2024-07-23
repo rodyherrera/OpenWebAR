@@ -6,7 +6,8 @@ const removeBackgroundMiddleware = async (req: Request, res: Response, next: Nex
         next();
         return;
     }
-    removeBackground({ url: req.file.path }, req.file.path);
+    const endpoint = `http://${process.env.SERVER_HOSTNAME}:${process.env.SERVER_PORT}/${req.file.filename}`;
+    removeBackground({ url: endpoint }, req.file.path);
     next();
 };
 

@@ -36,12 +36,12 @@ fi
 
 if ! command_exists virtualenv; then
     echo '@start-backend-server.sh: "python3-virtualenv" is not installed, it will try to install automatically.'
-    pip3 install virtualenv
+    install_package python3-virtualenv
 fi
 
 if [ ! -d './venv/' ]; then
     echo '@start-backend-server.sh: creating virtual environment to run python3 dependencies...'
-    python3 -m virtualenv venv
+    virtualenv venv
 fi
 
 echo '@start-backend-server.sh: activating the virtual environment...'
@@ -71,7 +71,7 @@ if [ "$adjusted_threads" -lt 1 ]; then
 fi
 
 echo '@start-backend-server.sh: starting ollama server...'
-ollama serve > /dev/null 2>&1
+ollama serve > /dev/null 2>&1 &
 
 echo '@start-backend-server.sh: starting rembg api server...'
 export BROWSER=none
