@@ -4,10 +4,13 @@ import '@components/aframe/roundedImage';
 import '@components/aframe/roundedVideo';
 import '@components/aframe/gestures';
 import '@components/aframe/draggable';
+import useLocation from '@hooks/useLocation'; 
 import CameraARSceneContent from '@components/general/CameraARSceneContent';
 
 const CameraScene = () => {
-    return (
+    const { location, isLoading, /* isError */ } = useLocation();
+
+    return (!isLoading) && (
         <a-scene 
             device-orientation-permission-ui='enabled: false' 
             arjs='trackingMethod: best; sourceType: webcam; videoTexture: true; debugUIEnabled: false;' 
@@ -21,8 +24,11 @@ const CameraScene = () => {
             <a-light type='directional' color='#ffffff' intensity='2' position='1 1 1' />
             <a-camera
                 wasd-controls='enabled: false'
-                gps-new-camera='gpsMinDistance: 5; simulateLatitude: 51.049; simulateLongitude: -0.723' />
-            <CameraARSceneContent />
+                look-controls-enabled='false' 
+                arjs-device-orientation-controls='smoothingFactor:0.1'
+                rotation-reader
+                gps-new-camera='gpsMinDistance: 5;' />
+            <CameraARSceneContent location={location} />
         </a-scene>
     );
 };

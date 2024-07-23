@@ -4,10 +4,10 @@ import RoundedImage from '@components/aframe/RoundedImage';
 import RoundedBox from '@components/aframe/RoundedBox';
 import Text from '@components/aframe/Text';
 
-const ARSceneContent = () => (
+const ARSceneContent = ({ location }) => (
     <a-entity
         look-at='[gps-new-camera]'
-        gps-new-entity-place='latitude: 51.05; longitude: -0.723'
+        gps-new-entity-place={`latitude: ${location.latitude + 0.001}; longitude: ${location.longitude};`}
         scale='35 35 35'
         raycaster='objects: .clickable'
         emitevents='true'
