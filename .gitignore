@@ -1,7 +1,6 @@
 server/public/
 client/node_modules/
 client/package-lock.json
-node-server/node_modules
-node-server/.env
-node-server/venv/
-node-server/public/
+server/node_modules
+server/.env
+server/venv/
